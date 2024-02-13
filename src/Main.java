@@ -11,14 +11,13 @@ public class Main {
             Board board = new Board();
             Menu menu = new Menu();
 
-            // Create a panel to hold both the board and menu
-            JPanel gridPanel = new JPanel();
+            // Create a panel to hold the board
             JPanel mainPanel = new JPanel(new BorderLayout());
             mainPanel.add(board, BorderLayout.CENTER);
 
             // Add the main panel to the frame's content pane
             frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-            frame.setJMenuBar(menu.getMB());
+            frame.setJMenuBar(menu);
 
             // Pack and display the frame
             frame.pack();
