@@ -1,27 +1,15 @@
 import javax.swing.*;
 
-import java.awt.Dimension;
-import java.awt.MenuBar;
-import java.awt.Toolkit;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-public class Menu extends JFrame {
+public class Menu extends JMenuBar {
     // Encapsulating fields
-    private JMenuBar mb;
     private JMenu g, n, l, h, c;
     private JMenuItem g1, g2, l1, h1, c1, c2;
 
     public Menu() {
         initializeMenu();
-        setupFrame();
     }
 
     private void initializeMenu() {
-        // create a menubar
-        mb = new JMenuBar();
-
         // create menus
         g = new JMenu("Game");
         n = new JMenu("Network");
@@ -46,35 +34,11 @@ public class Menu extends JFrame {
         c.add(c2);
 
         // add menus to menu bar
-        mb.add(g);
-        mb.add(n);
-        mb.add(l);
-        mb.add(h);
-        mb.add(c);
-    }
-
-    private void setupFrame() {
-        // add menubar to frame
-        setJMenuBar(mb);
-
-        // Set default close operation
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Add window listener to handle frame closure
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                // Additional cleanup code if needed
-                super.windowClosing(e);
-            }
-        });
-
-        // Make the frame visible
-        setVisible(true);
-    }
-    
-    public JMenuBar getMB() {
-    	return mb;
+        add(g);
+        add(n);
+        add(l);
+        add(h);
+        add(c);
     }
 
 }
