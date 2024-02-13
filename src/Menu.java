@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 import java.awt.Dimension;
+import java.awt.MenuBar;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -68,24 +69,12 @@ public class Menu extends JFrame {
             }
         });
 
-        // Maximize the frame to take up the whole screen
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Get the size of the screen
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Set the size of the frame to match the screen size
-        setSize(screenSize);
-
         // Make the frame visible
         setVisible(true);
     }
-
-
-    // Example method to add ActionListener to menu items
-    public void addRestartGameListener(ActionListener listener) {
-        g1.addActionListener(listener);
+    
+    public JMenuBar getMB() {
+    	return mb;
     }
 
-    // Other methods for adding listeners, modifying menus, etc., can be added here
 }
