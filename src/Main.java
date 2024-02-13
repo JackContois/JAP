@@ -11,7 +11,8 @@ public class Main {
             Board board = new Board();
             Menu menu = new Menu();
 
-            // Create a panel to hold the board
+            // Create a panel to hold both the board and menu
+            JPanel gridPanel = new JPanel();
             JPanel mainPanel = new JPanel(new BorderLayout());
             mainPanel.add(board, BorderLayout.CENTER);
 
