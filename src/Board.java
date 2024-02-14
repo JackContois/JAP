@@ -1,16 +1,15 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Board extends JPanel {
-    private static final int CELL_SIZE = 50;
+    private static final int CELL_SIZE = 80;
     static final int NUM_ROWS = 6;
     static final int NUM_COLS = 7;
     private BufferedImage emptyCell;
-    private CellState[][] board; // Array to represent the board
+    private CellState[][] board;
 
     public Board() {
         try {
@@ -33,14 +32,6 @@ public class Board extends JPanel {
 
         // Set a preferred size for the board panel
         setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
-
-        // Create buttons for column selection
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        for (int col = 0; col < NUM_COLS; col++) {
-            JButton button = new JButton("▼"); // Use appropriate arrow character or icon
-            buttonPanel.add(button);
-        }
-        add(buttonPanel, BorderLayout.NORTH); 
     }
 
     @Override
@@ -59,11 +50,11 @@ public class Board extends JPanel {
         }
     }
 
-    // Method to update the board with a move
-    public void makeMove(int row, int col, CellState player) {
-        board[row][col] = player;
-        repaint(); // Repaint the board after making the move
-    }
+//    // Method to update the board with a move
+//    public void makeMove(int row, int col, CellState player) {
+//        board[row][col] = player;
+//        repaint(); // Repaint the board after making the move
+//    }
     
     // Enumeration representing the possible states of a cell
     public enum CellState {
