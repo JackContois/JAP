@@ -12,17 +12,35 @@ public class Main {
             Menu menu = new Menu();
 
             // Create a panel to hold both the board and menu
-            JPanel gridPanel = new JPanel();
             JPanel mainPanel = new JPanel(new BorderLayout());
             mainPanel.add(board, BorderLayout.CENTER);
 
-            // Add the main panel to the frame's content pane
+            // Create a panel for the game log
+            GameLog logText = new GameLog(13, 40);
+            JScrollPane scrollPane = new JScrollPane(logText);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            JPanel logPanel = new JPanel(new BorderLayout());
+            logPanel.add(scrollPane, BorderLayout.SOUTH);
+            
+            GameLog gameStatus = new GameLog(13, 40);
+            JScrollPane scrollPane2 = new JScrollPane(gameStatus);
+            JPanel logPanel2 = new JPanel(new BorderLayout());
+            logPanel.add(scrollPane2, BorderLayout.CENTER);
+            
+            // Add the main panel and log panel to the frame's content pane
             frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
+            frame.getContentPane().add(logPanel, BorderLayout.EAST);
+            frame.getContentPane().add(logPanel2, BorderLayout.NORTH);
             frame.setJMenuBar(menu);
 
+            frame.setResizable(false);
+            
             // Pack and display the frame
             frame.pack();
             frame.setVisible(true);
+
+            // Example of updating the game log
+            logText.updateLog("Welcome to Connect Four!");
         });
     }
 }
