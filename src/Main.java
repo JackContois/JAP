@@ -22,15 +22,18 @@ public class Main {
             JPanel logPanel = new JPanel(new BorderLayout());
             logPanel.add(scrollPane, BorderLayout.SOUTH);
             
-            GameLog gameStatus = new GameLog(13, 40);
-            JScrollPane scrollPane2 = new JScrollPane(gameStatus);
-            JPanel logPanel2 = new JPanel(new BorderLayout());
-            logPanel.add(scrollPane2, BorderLayout.CENTER);
+            
+            GameStatus statusBox = new GameStatus();
+            //JScrollPane scrollPane2 = new JScrollPane(statusBox);
+            //GameLog gameStatus = new GameLog(13, 40);
+            //JScrollPane scrollPane2 = new JScrollPane(gameStatus);
+            //JPanel logPanel2 = new JPanel(new BorderLayout());
+            logPanel.add(statusBox, BorderLayout.CENTER);
             
             // Add the main panel and log panel to the frame's content pane
             frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
             frame.getContentPane().add(logPanel, BorderLayout.EAST);
-            frame.getContentPane().add(logPanel2, BorderLayout.NORTH);
+           // frame.getContentPane().add(logPanel2, BorderLayout.NORTH);
             frame.setJMenuBar(menu);
 
             frame.setResizable(false);
