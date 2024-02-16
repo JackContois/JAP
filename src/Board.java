@@ -10,6 +10,7 @@ public class Board extends JPanel {
     static final int NUM_COLS = 7;
     private BufferedImage emptyCell;
     private CellState[][] board;
+    private JButton[] columnButtons; // Array to hold column buttons
 
     public Board() {
         try {
@@ -21,7 +22,7 @@ public class Board extends JPanel {
             e.printStackTrace();
             System.err.println("Failed to load image: " + e.getMessage());
         }
-        
+
         // Initialize the board array
         board = new CellState[NUM_ROWS][NUM_COLS];
         for (int row = 0; row < NUM_ROWS; row++) {
@@ -32,7 +33,10 @@ public class Board extends JPanel {
 
         // Set a preferred size for the board panel
         setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
-    }
+
+    	}
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -44,23 +48,16 @@ public class Board extends JPanel {
                 if (board[row][col] == CellState.EMPTY) {
                     g.drawImage(emptyCell, x, y, CELL_SIZE, CELL_SIZE, null);
                 } else {
-                    // Draw other cell states (e.g., player pieces) here
+                    // Draw player's disc
                 }
             }
         }
     }
 
-//    // Method to update the board with a move
-//    public void makeMove(int row, int col, CellState player) {
-//        board[row][col] = player;
-//        repaint(); // Repaint the board after making the move
-//    }
-    
     // Enumeration representing the possible states of a cell
     public enum CellState {
         EMPTY,
         PLAYER_ONE,
         PLAYER_TWO
-        // Add more states if needed
     }
 }
