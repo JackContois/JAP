@@ -69,7 +69,6 @@ public class Main {
                 ImageIcon icon = new ImageIcon(img.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
                 JButton button = new JButton(icon);
                 final int column = col;
-               // button.addActionListener(e -> makeMove(column));
                 buttonPanel.add(button);
                 columnButtons[col] = button;
             }
@@ -80,7 +79,40 @@ public class Main {
         mainPanel.add(buttonPanel, BorderLayout.NORTH); // Add button panel to the top of the main panel
     }
 
-//    private static void makeMove(int column) {
-//        //This is where we are going to move the pieces
+//    private static void addArrows(JPanel mainPanel, Board board) {
+//        JPanel buttonPanel = new JPanel(new GridLayout(1, Board.NUM_COLS));
+//        JButton[] columnButtons = new JButton[Board.NUM_COLS];
+//        try {
+//            for (int col = 0; col < Board.NUM_COLS; col++) {
+//                Image img = ImageIO.read(Board.class.getResource("arrow.png"));
+//                if (img != null) {
+//                    ImageIcon icon = new ImageIcon(img.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+//                    JButton button = new JButton(icon);
+//                    final int column = col;
+//                    button.addActionListener(e -> makeMove(board, column));
+//                    buttonPanel.add(button);
+//                    columnButtons[col] = button;
+//                } else {
+//                    System.err.println("Failed to load image: arrow.png");
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.err.println("Failed to load image: " + e.getMessage());
+//        }
+//        mainPanel.add(buttonPanel, BorderLayout.NORTH); // Add button panel to the top of the main panel
+//    }
+//
+//
+//    private static void makeMove(Board board, int column) {
+//        // Find the bottom empty cell in the specified column
+//        for (int row = Board.NUM_ROWS - 1; row >= 0; row--) {
+//            if (board.board[row][column] == Board.CellState.EMPTY) {
+//                // Update the cell state
+//                board.board[row][column] = Board.CellState.PLAYER_ONE; // Assuming it's player one's move
+//                board.repaint(); // Repaint the board to reflect the changes
+//                break; // Exit the loop once the move is made
+//            }
+//        }
 //    }
 }

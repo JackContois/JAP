@@ -9,11 +9,15 @@ public class Board extends JPanel {
     static final int NUM_ROWS = 6;
     static final int NUM_COLS = 7;
     private BufferedImage emptyCell;
-    private CellState[][] board;
+    private BufferedImage redCell;
+    private BufferedImage blackCell;
+    CellState[][] board;
 
     public Board() {
         try {
             emptyCell = ImageIO.read(Board.class.getResource("empty.png"));
+            redCell = ImageIO.read(Board.class.getResource("red.png"));
+            blackCell = ImageIO.read(Board.class.getResource("black.png"));
             if (emptyCell == null) {
                 throw new IOException("Failed to read image file");
             }
@@ -22,7 +26,7 @@ public class Board extends JPanel {
             System.err.println("Failed to load image: " + e.getMessage());
         }
         
-        // Initialize the board array
+
         board = new CellState[NUM_ROWS][NUM_COLS];
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
@@ -30,37 +34,33 @@ public class Board extends JPanel {
             }
         }
 
-        // Set a preferred size for the board panel
         setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        board[5][6] = CellState.PLAYER_ONE; //Placed pieces
+        board[5][5] = CellState.PLAYER_TWO; //Placed pieces
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
                 int x = col * CELL_SIZE;
                 int y = row * CELL_SIZE;
                 if (board[row][col] == CellState.EMPTY) {
                     g.drawImage(emptyCell, x, y, CELL_SIZE, CELL_SIZE, null);
+                }else if (board[row][col] == CellState.PLAYER_ONE) {
+                	g.drawImage(redCell, x, y, CELL_SIZE, CELL_SIZE, null);
                 } else {
-                    // Draw other cell states (e.g., player pieces) here
+                	g.drawImage(blackCell, x, y, CELL_SIZE, CELL_SIZE, null);
                 }
             }
         }
     }
 
-//    // Method to update the board with a move
-//    public void makeMove(int row, int col, CellState player) {
-//        board[row][col] = player;
-//        repaint(); // Repaint the board after making the move
-//    }
     
-    // Enumeration representing the possible states of a cell
     public enum CellState {
         EMPTY,
         PLAYER_ONE,
         PLAYER_TWO
-        // Add more states if needed
     }
 }

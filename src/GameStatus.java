@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -62,15 +63,18 @@ public class GameStatus extends JPanel {
 		top.add(topLeftPanel);	
 		
 		// adding components to the middle panel
-		middle.add(new JLabel("Players Turn"));
-		middle.add(new JLabel("Player 2"));
+		middle.add(new JLabel("Players Turn: Player 1"));
+		middle.add(new JLabel("Turn Timer: "));
 		
 		// adding components to the bottom panel
-		JLabel playerColors = new JLabel("Player one: Black");
+		JLabel playerColors = new JLabel("<html>Player one: Black<br>Player Two: Red</html>");
+		JLabel chipsPlayed = new JLabel("<html>Chips Played: <br>Player 1: <br>Player 2: </html>");
 		playerColors.setOpaque(true);
 		playerColors.setBackground(new Color(174,174,174));
 		bottom.add(playerColors);
-		bottom.add(new JLabel("Player 2"));
+		bottom.add(chipsPlayed);
+		playerColors.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		chipsPlayed.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		
 		// assigning the positions of the sub-panels within the GameStatus Panel
