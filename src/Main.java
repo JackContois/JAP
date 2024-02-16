@@ -33,6 +33,17 @@ public class Main {
             //JPanel logPanel2 = new JPanel(new BorderLayout());
             logPanel.add(statusBox, BorderLayout.CENTER);
             
+            
+            // adding the title and title panel
+            JPanel titlePanel = new JPanel();
+            titlePanel.setLayout(new FlowLayout());
+            
+            JLabel title = new JLabel("Connect 4");
+            title.setFont(new Font("Arial", Font.BOLD, 40));
+            
+            titlePanel.add(title);
+            frame.add(titlePanel,BorderLayout.NORTH);
+            
             // Add the main panel and log panel to the frame's content pane
             frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
             frame.getContentPane().add(logPanel, BorderLayout.EAST);

@@ -35,16 +35,31 @@ public class GameStatus extends JPanel {
 		middle.setBackground(BACKGROUND_COLOR);
 		bottom.setBackground(BACKGROUND_COLOR);
 		
-		
-		
 		// adding components to the top panel
+		// creating sub-panels within the top panel
 		JPanel topMiddlePanel = new JPanel();
-		topMiddlePanel.setLayout(new BorderLayout());
-		topMiddlePanel.add(new JLabel("Game Timer"),BorderLayout.NORTH);
-		topMiddlePanel.add(new JLabel("0:31"),BorderLayout.SOUTH);
-		top.add(new JLabel("Game Status"));
+		JPanel topRightPanel = new JPanel();
+		JPanel topLeftPanel = new JPanel();
+		
+		// adding components to the middle panel
+		topMiddlePanel.setLayout(new FlowLayout());
+		topMiddlePanel.setBackground(BACKGROUND_COLOR);
+		topMiddlePanel.add(new JLabel("Game Timer"));
+		topMiddlePanel.add(new JLabel("0:31"));
+		
+		// adding components to the right panel
+		topRightPanel.setLayout(new FlowLayout());
+		topRightPanel.setBackground(BACKGROUND_COLOR);
+		topRightPanel.add(new JLabel("Game Status"));
+		
+		// adding components to the left panel
+		topLeftPanel.setLayout(new FlowLayout());
+		topLeftPanel.setBackground(BACKGROUND_COLOR);
+		topLeftPanel.add(new JLabel("Round 2"));
+		
+		top.add(topRightPanel);
 		top.add(topMiddlePanel);
-		top.add(new JLabel("Round 2"));	
+		top.add(topLeftPanel);	
 		
 		// adding components to the middle panel
 		middle.add(new JLabel("Players Turn"));
