@@ -1,0 +1,12 @@
+added manifest
+adding: Board$CellState.class(in = 1005) (out= 570)(deflated 43%)
+adding: Board.class(in = 2505) (out= 1459)(deflated 41%)
+adding: GameLog.class(in = 797) (out= 464)(deflated 41%)
+adding: GameStatus.class(in = 1911) (out= 1122)(deflated 41%)
+adding: Main.class(in = 3581) (out= 1991)(deflated 44%)
+adding: Menu.class(in = 1276) (out= 718)(deflated 43%)
+adding: resources/(in = 0) (out= 0)(stored 0%)
+adding: resources/arrow.png(in = 1577) (out= 1582)(deflated 0%)
+adding: resources/black.png(in = 733) (out= 738)(deflated 0%)
+adding: resources/empty.png(in = 351) (out= 354)(deflated 0%)
+adding: resources/red.png(in = 830) (out= 835)(deflated 0%)

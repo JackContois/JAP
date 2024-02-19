@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -35,27 +36,45 @@ public class GameStatus extends JPanel {
 		middle.setBackground(BACKGROUND_COLOR);
 		bottom.setBackground(BACKGROUND_COLOR);
 		
-		
-		
 		// adding components to the top panel
+		// creating sub-panels within the top panel
 		JPanel topMiddlePanel = new JPanel();
-		topMiddlePanel.setLayout(new BorderLayout());
-		topMiddlePanel.add(new JLabel("Game Timer"),BorderLayout.NORTH);
-		topMiddlePanel.add(new JLabel("0:31"),BorderLayout.SOUTH);
-		top.add(new JLabel("Game Status"));
-		top.add(topMiddlePanel);
-		top.add(new JLabel("Round 2"));	
+		JPanel topRightPanel = new JPanel();
+		JPanel topLeftPanel = new JPanel();
 		
 		// adding components to the middle panel
-		middle.add(new JLabel("Players Turn"));
-		middle.add(new JLabel("Player 2"));
+		topMiddlePanel.setLayout(new FlowLayout());
+		topMiddlePanel.setBackground(BACKGROUND_COLOR);
+		topMiddlePanel.add(new JLabel("Game Timer"));
+		topMiddlePanel.add(new JLabel("0:31"));
+		
+		// adding components to the right panel
+		topRightPanel.setLayout(new FlowLayout());
+		topRightPanel.setBackground(BACKGROUND_COLOR);
+		topRightPanel.add(new JLabel("Game Status"));
+		
+		// adding components to the left panel
+		topLeftPanel.setLayout(new FlowLayout());
+		topLeftPanel.setBackground(BACKGROUND_COLOR);
+		topLeftPanel.add(new JLabel("Round 2"));
+		
+		top.add(topRightPanel);
+		top.add(topMiddlePanel);
+		top.add(topLeftPanel);	
+		
+		// adding components to the middle panel
+		middle.add(new JLabel("Players Turn: Player 1"));
+		middle.add(new JLabel("Turn Timer: "));
 		
 		// adding components to the bottom panel
-		JLabel playerColors = new JLabel("Player one: Black");
+		JLabel playerColors = new JLabel("<html>Player one: Black<br>Player Two: Red</html>");
+		JLabel chipsPlayed = new JLabel("<html>Chips Played: <br>Player 1: <br>Player 2: </html>");
 		playerColors.setOpaque(true);
 		playerColors.setBackground(new Color(174,174,174));
 		bottom.add(playerColors);
-		bottom.add(new JLabel("Player 2"));
+		bottom.add(chipsPlayed);
+		playerColors.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		chipsPlayed.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		
 		// assigning the positions of the sub-panels within the GameStatus Panel

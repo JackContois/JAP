@@ -1,0 +1,14 @@
+warning: [path] Invalid filename: lib/*
+src\Board.java:7: warning: [serial] serializable class Board has no definition of serialVersionUID
+public class Board extends JPanel {
+       ^
+src\Menu.java:3: warning: [serial] serializable class Menu has no definition of serialVersionUID
+public class Menu extends JMenuBar {
+       ^
+src\GameLog.java:3: warning: [serial] serializable class GameLog has no definition of serialVersionUID
+public class GameLog extends JTextArea {
+       ^
+src\GameStatus.java:12: warning: [serial] serializable class GameStatus has no definition of serialVersionUID
+public class GameStatus extends JPanel {
+       ^
+5 warnings
