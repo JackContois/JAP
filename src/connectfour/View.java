@@ -11,6 +11,7 @@ public class View extends JFrame {
     private static final int NUM_ROWS = 6;
     private static final int NUM_COLS = 7;
     private JPanel mainPanel;
+    private JPanel boardPanel;
     protected JButton[] columnButtons;
     private BufferedImage redChipImage;
     private BufferedImage blackChipImage;
@@ -27,22 +28,38 @@ public class View extends JFrame {
         loadImages();
 
         // Create main panel
-        mainPanel = new JPanel() {
+        mainPanel = new JPanel(new BorderLayout());
+        add(mainPanel);
+        
+        initializeBoard();
+        
+        // Create board panel for drawing the board
+        boardPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (board != null) {
-                    drawBoard(g);
+                for (int row = 0; row < NUM_ROWS; row++) {
+                    for (int col = 0; col < NUM_COLS; col++) {
+                        int x = col * CELL_SIZE;
+                        int y = row * CELL_SIZE;
+                        if (board[row][col] == 0) {
+                            g.drawImage(emptyCellImage, x, y, CELL_SIZE, CELL_SIZE, null);
+                        } else if (board[row][col] == 1) {
+                            g.drawImage(redChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
+                        } else if (board[row][col] == 2) {
+                            g.drawImage(blackChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
+                        }
+                        g.setColor(Color.BLACK);
+                        g.drawRect(x, y, CELL_SIZE, CELL_SIZE);
+                    }
                 }
             }
         };
-        mainPanel.setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
-        add(mainPanel, BorderLayout.NORTH);
+        boardPanel.setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
+        mainPanel.add(boardPanel, BorderLayout.CENTER);
 
-        // Initialize board and other components
-        initializeBoard();
+        // Add buttons
         addButtons();
-
 
         // Pack and set frame visibility
         pack();
@@ -84,35 +101,19 @@ public class View extends JFrame {
             System.err.println("Failed to load image: " + e.getMessage());
         }
 
-        // Add buttonPanel to the SOUTH region
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        // Create main panel for the board
-        JPanel boardPanel = new JPanel(new GridLayout(NUM_ROWS, NUM_COLS));
-        boardPanel.setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
-        add(boardPanel, BorderLayout.CENTER); // Add boardPanel to the CENTER region
+        // Add buttonPanel to the NORTH region
+        mainPanel.add(buttonPanel, BorderLayout.NORTH);
     }
 
-
-
-    private void drawBoard(Graphics g) {
-        for (int row = 0; row < NUM_ROWS; row++) {
-            for (int col = 0; col < NUM_COLS; col++) {
-                int x = col * CELL_SIZE;
-                int y = row * CELL_SIZE;
-                if (board[row][col] == 0) {
-                    g.drawImage(emptyCellImage, x, y, CELL_SIZE, CELL_SIZE, null);
-                } else if (board[row][col] == 1) {
-                    g.drawImage(redChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
-                } else if (board[row][col] == 2) {
-                    g.drawImage(blackChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
-                }
-                g.setColor(Color.BLACK);
-                g.drawRect(x, y, CELL_SIZE, CELL_SIZE);
-            }
-        }
+    public void setBoard(int[][] board) {
+        this.board = board;
+        boardPanel.repaint(); // Repaint the board panel when the board changes
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
     private void initializeBoard() {
         board = new int[NUM_ROWS][NUM_COLS];
         for (int row = 0; row < NUM_ROWS; row++) {
@@ -120,14 +121,5 @@ public class View extends JFrame {
                 board[row][col] = 0;
             }
         }
-    }
-
-    public void setBoard(int[][] board) {
-        this.board = board;
-        mainPanel.repaint();
-    }
-    
-    public void setController(Controller controller) {
-    	this.controller = controller;
     }
 }

@@ -11,11 +11,6 @@ public class Controller {
         this.currentPlayer = 1; // Start with player 1
     }
 
-    // Getter method for the model
-    public Model getModel() {
-        return model;
-    }
-
     public void handleButtonClick(int column) {
         if (model != null) {
             model.makeMove(column, currentPlayer); // Call the makeMove method of the model
