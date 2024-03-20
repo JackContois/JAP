@@ -7,6 +7,7 @@ public class Main {
             View view = new View();
             Controller controller = new Controller(model, view);
             view.setController(controller);
+            view.setModel(model);
             view.setVisible(true);
             view.setResizable(false);
     }

@@ -3,6 +3,10 @@ package connectfour;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -18,6 +22,9 @@ public class View extends JFrame {
     private BufferedImage emptyCellImage;
     private int[][] board;
     private Controller controller;
+    private Model model;
+    private JMenu g, n, l, h, c;
+    private JMenuItem g1, g2, l1, h1, c1, c2;
 
     public View() {
         // Initialize the frame
@@ -32,6 +39,7 @@ public class View extends JFrame {
         add(mainPanel);
         
         initializeBoard();
+        initializeMenu();
         
         // Create board panel for drawing the board
         boardPanel = new JPanel() {
@@ -42,11 +50,12 @@ public class View extends JFrame {
                     for (int col = 0; col < NUM_COLS; col++) {
                         int x = col * CELL_SIZE;
                         int y = row * CELL_SIZE;
-                        if (board[row][col] == 0) {
+                        int value = model.getBoardValue(col,row);
+                        if (value == 0) {
                             g.drawImage(emptyCellImage, x, y, CELL_SIZE, CELL_SIZE, null);
-                        } else if (board[row][col] == 1) {
+                        } else if (value == 1) {
                             g.drawImage(redChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
-                        } else if (board[row][col] == 2) {
+                        } else if (value == 2) {
                             g.drawImage(blackChipImage, x, y, CELL_SIZE, CELL_SIZE, null);
                         }
                         g.setColor(Color.BLACK);
@@ -87,9 +96,6 @@ public class View extends JFrame {
                 ImageIcon icon = new ImageIcon(img.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
                 JButton button = new JButton(icon);
                 int finalCol = col;
-                button.setContentAreaFilled(false);
-                button.setBorderPainted(false);
-                button.setFocusPainted(false);
                 button.addActionListener(e -> {
                     controller.handleButtonClick(finalCol);
                 });
@@ -105,13 +111,52 @@ public class View extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
     }
 
-    public void setBoard(int[][] board) {
-        this.board = board;
+    public void checkValue(int col, int row) {
+        board[row][col] = model.getBoardValue(col, row);
         boardPanel.repaint(); // Repaint the board panel when the board changes
+        
+        int winner = model.checkWinner();
+        if (winner != 0) {
+            String message = "Player " + winner + " wins!";
+            
+            // Create a custom dialog
+            JDialog dialog = new JDialog(this, "Game Over", true);
+            JLabel label = new JLabel(message);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            JButton okButton = new JButton("OK");
+            
+            // Add ActionListener to the "OK" button
+            okButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dialog.dispose(); // Close the dialog
+                    resetGame(); // Reset the game
+                }
+            });
+            
+            // Set layout manager for the dialog
+            dialog.setLayout(new BorderLayout());
+            
+            // Add components to the dialog
+            dialog.add(label, BorderLayout.CENTER);
+            dialog.add(okButton, BorderLayout.SOUTH);
+            
+            // Set the size of the dialog
+            dialog.setSize(new Dimension(300, 150)); // Set the desired size here
+            
+            // Pack and set dialog visibility
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        }
     }
-
+    
+    
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+    
+    public void setModel(Model model) {
+        this.model = model;
     }
     
     private void initializeBoard() {
@@ -121,5 +166,48 @@ public class View extends JFrame {
                 board[row][col] = 0;
             }
         }
+    }
+    
+    private void resetGame() {
+        model.resetGame();
+        initializeBoard();
+        boardPanel.repaint();
+    }
+    private void initializeMenu() {
+        // Create menu bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create menus
+        g = new JMenu("Game");
+        n = new JMenu("Network");
+        l = new JMenu("Language");
+        h = new JMenu("Help");
+        c = new JMenu("Chat");
+
+        // Create menu items
+        g1 = new JMenuItem("Restart Game");
+        g2 = new JMenuItem("Quit Game");
+        l1 = new JMenuItem("Change Language");
+        h1 = new JMenuItem("How To Play");
+        c1 = new JMenuItem("Open Chat");
+        c2 = new JMenuItem("Close Chat");
+
+        // Add menu items to menus
+        g.add(g1);
+        g.add(g2);
+        l.add(l1);
+        h.add(h1);
+        c.add(c1);
+        c.add(c2);
+
+        // Add menus to menu bar
+        menuBar.add(g);
+        menuBar.add(n);
+        menuBar.add(l);
+        menuBar.add(h);
+        menuBar.add(c);
+
+        // Set the menu bar to the frame
+        setJMenuBar(menuBar);
     }
 }

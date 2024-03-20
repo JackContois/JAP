@@ -3,17 +3,18 @@ package connectfour;
 public class Controller {
     private Model model;
     private View view;
-    private int currentPlayer; // Track the current player
 
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-        this.currentPlayer = 1; // Start with player 1
     }
 
     public void handleButtonClick(int column) {
-        if (model != null) {
-            model.makeMove(column, currentPlayer); // Call the makeMove method of the model
+    	if (model != null) {
+            int row = model.makeMove(column); // Call the makeMove method of the model
+            if (row != -1) {
+            	view.checkValue(column, row);
+            }
         }
     }
 
