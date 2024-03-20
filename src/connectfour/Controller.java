@@ -11,12 +11,11 @@ public class Controller {
 
     public void handleButtonClick(int column) {
     	if (model != null) {
-            int row = model.makeMove(column); // Call the makeMove method of the model
+            int row = model.makeMove(column); //make large swithc case for all possible button clicks
             if (row != -1) {
             	view.checkValue(column, row);
             }
         }
     }
 
-    // Additional methods for controlling the game can be added here
 }

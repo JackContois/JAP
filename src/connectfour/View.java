@@ -5,8 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -16,6 +14,11 @@ public class View extends JFrame {
     private static final int NUM_COLS = 7;
     private JPanel mainPanel;
     private JPanel boardPanel;
+    private JPanel playPanel;
+    private JPanel gameStatus;
+    private JPanel gameLog;
+    private JPanel titlePanel;
+    private JPanel infoPanel;
     protected JButton[] columnButtons;
     private BufferedImage redChipImage;
     private BufferedImage blackChipImage;
@@ -25,7 +28,8 @@ public class View extends JFrame {
     private Model model;
     private JMenu g, n, l, h, c;
     private JMenuItem g1, g2, l1, h1, c1, c2;
-
+    
+    
     public View() {
         // Initialize the frame
         setTitle("Connect Four");
@@ -38,8 +42,20 @@ public class View extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
         
+        playPanel = new JPanel(new BorderLayout());
+        
         initializeBoard();
         initializeMenu();
+        
+        //test area
+        gameStatus = new JPanel(new BorderLayout());
+        gameStatus.add(new JLabel("test"));
+        infoPanel = new JPanel(new BorderLayout());
+        infoPanel.add(gameStatus, BorderLayout.NORTH);
+        mainPanel.add(infoPanel, BorderLayout.EAST);
+        titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(new JLabel("test"));
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
         
         // Create board panel for drawing the board
         boardPanel = new JPanel() {
@@ -65,7 +81,8 @@ public class View extends JFrame {
             }
         };
         boardPanel.setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
-        mainPanel.add(boardPanel, BorderLayout.CENTER);
+        playPanel.add(boardPanel, BorderLayout.CENTER);
+        mainPanel.add(playPanel, BorderLayout.WEST);
 
         // Add buttons
         addButtons();
@@ -108,7 +125,7 @@ public class View extends JFrame {
         }
 
         // Add buttonPanel to the NORTH region
-        mainPanel.add(buttonPanel, BorderLayout.NORTH);
+        playPanel.add(buttonPanel, BorderLayout.NORTH);
     }
 
     public void checkValue(int col, int row) {
