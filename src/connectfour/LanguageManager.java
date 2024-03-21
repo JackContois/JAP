@@ -38,8 +38,6 @@ public class LanguageManager {
         frenchPhrases.put("HTPLabel", "Comment Jouer");
         french.put("phrases", frenchPhrases);
         languages.put("French", french);
-
-        // Add more languages as needed
     }
 
     public HashMap<String, String> getPhrases(String language) {

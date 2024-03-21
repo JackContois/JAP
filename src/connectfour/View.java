@@ -13,6 +13,7 @@ public class View extends JFrame {
     private static final int CELL_SIZE = 80;
     private static final int NUM_ROWS = 6;
     private static final int NUM_COLS = 7;
+    int option = 0;
     private JPanel mainPanel;
     private JPanel boardPanel;
     private JPanel playPanel;
@@ -133,7 +134,7 @@ public class View extends JFrame {
                 JButton button = new JButton(icon);
                 int finalCol = col;
                 button.addActionListener(e -> {
-                    controller.handleButtonClick(finalCol);
+                    controller.makeMoveButton(finalCol);
                 });
                 buttonPanel.add(button);
                 columnButtons[col] = button;
@@ -166,7 +167,6 @@ public class View extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dialog.dispose(); // Close the dialog
-                    resetGame(); // Reset the game
                 }
             });
             
@@ -204,7 +204,7 @@ public class View extends JFrame {
         }
     }
     
-    private void resetGame() {
+    protected void resetGame() {
         model.resetGame();
         initializeBoard();
         boardPanel.repaint();
@@ -218,44 +218,41 @@ public class View extends JFrame {
         n = new JMenu();
         l = new JMenu();
         h = new JMenu();
-        c = new JMenu("Chat");
 
         // Create menu items
         g1 = new JMenuItem();
         g2 = new JMenuItem("Quit Game");
         l1 = new JMenuItem("Change Language");
         h1 = new JMenuItem("How To Play");
-        c1 = new JMenuItem("Open Chat");
-        c2 = new JMenuItem("Close Chat");
-        
-        // Add action listener to "Change Language" menu item
-        l1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setLanguage();
-            }
-        });
-
+            
         // Add menu items to menus
         g.add(g1);
         g.add(g2);
         l.add(l1);
         h.add(h1);
-        c.add(c1);
-        c.add(c2);
-
+        
         // Add menus to menu bar
         menuBar.add(g);
         menuBar.add(n);
         menuBar.add(l);
         menuBar.add(h);
-        menuBar.add(c);
 
         // Set the menu bar to the frame
         setJMenuBar(menuBar);
+        
+        //Set up actions
+        g1.addActionListener(e -> {
+        	this.option = 0;
+           controller.handeButtonClick(option);
+        });
+        
+        l1.addActionListener(e -> {
+        	this.option = 1;
+            controller.handeButtonClick(option);
+        });
     }
     
-    private void setLanguage() {
+    protected void setLanguage() {
         // Toggle between English and French
         newLanguage = (newLanguage.equals("French")) ? "English" : "French";
         currentPhrases = languageManager.getPhrases(newLanguage);
