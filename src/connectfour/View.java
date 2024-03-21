@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class View extends JFrame {
     private static final int CELL_SIZE = 80;
@@ -28,6 +29,17 @@ public class View extends JFrame {
     private Model model;
     private JMenu g, n, l, h, c;
     private JMenuItem g1, g2, l1, h1, c1, c2;
+    private LanguageManager languageManager;
+    private HashMap<String, String> currentPhrases;
+    String newLanguage = "French";
+    String gameMenu;
+    String networkMenu;
+    String helpMenu;
+    String languageMenu;
+    String restartMenu;
+    String quitMenu;
+    String cLanguageMenu;
+    String HTPMenu;
     
     
     public View() {
@@ -35,6 +47,14 @@ public class View extends JFrame {
         setTitle("Connect Four");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        initializeBoard();
+        initializeMenu();
+        
+        // Setting up language
+        languageManager = new LanguageManager();
+        setLanguage();
+        
+        
         // Load images
         loadImages();
 
@@ -44,8 +64,7 @@ public class View extends JFrame {
         
         playPanel = new JPanel(new BorderLayout());
         
-        initializeBoard();
-        initializeMenu();
+        
         
         //test area
         gameStatus = new JPanel(new BorderLayout());
@@ -195,19 +214,27 @@ public class View extends JFrame {
         JMenuBar menuBar = new JMenuBar();
 
         // Create menus
-        g = new JMenu("Game");
-        n = new JMenu("Network");
-        l = new JMenu("Language");
-        h = new JMenu("Help");
+        g = new JMenu();
+        n = new JMenu();
+        l = new JMenu();
+        h = new JMenu();
         c = new JMenu("Chat");
 
         // Create menu items
-        g1 = new JMenuItem("Restart Game");
+        g1 = new JMenuItem();
         g2 = new JMenuItem("Quit Game");
         l1 = new JMenuItem("Change Language");
         h1 = new JMenuItem("How To Play");
         c1 = new JMenuItem("Open Chat");
         c2 = new JMenuItem("Close Chat");
+        
+        // Add action listener to "Change Language" menu item
+        l1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setLanguage();
+            }
+        });
 
         // Add menu items to menus
         g.add(g1);
@@ -226,5 +253,43 @@ public class View extends JFrame {
 
         // Set the menu bar to the frame
         setJMenuBar(menuBar);
+    }
+    
+    private void setLanguage() {
+        // Toggle between English and French
+        newLanguage = (newLanguage.equals("French")) ? "English" : "French";
+        currentPhrases = languageManager.getPhrases(newLanguage);
+
+        // Update GUI components with text from currentPhrases
+        updateLabels();
+    }
+
+
+    
+    private void updateLabels() {
+    	gameMenu = currentPhrases.getOrDefault("gameLabel", "Game");
+        g.setText(gameMenu);
+        
+
+        networkMenu = currentPhrases.getOrDefault("networkLabel", "Network");
+        n.setText(networkMenu);
+        
+        languageMenu = currentPhrases.getOrDefault("languageLabel", "Language");
+        l.setText(languageMenu);
+        
+        helpMenu = currentPhrases.getOrDefault("helpLabel", "Help");
+        h.setText(helpMenu);
+        
+        restartMenu = currentPhrases.getOrDefault("restartLabel", "Restart Game");
+        g1.setText(restartMenu);
+        
+        quitMenu = currentPhrases.getOrDefault("quitLabel", "Quit Game");
+        g2.setText(quitMenu);
+        
+        cLanguageMenu = currentPhrases.getOrDefault("cLanguageLabel", "Change Language");
+        l1.setText(cLanguageMenu);
+
+        HTPMenu = currentPhrases.getOrDefault("HTPLabel", "How To Play");
+        h1.setText(HTPMenu);
     }
 }
