@@ -42,9 +42,14 @@ public class View extends JFrame {
     String quitMenu;
     String cLanguageMenu;
     String HTPMenu;
+    String player1Wins;
+    String player2Wins;
     
     
-    public View() {
+    public View(Model model) {
+    	this.model = model;
+    	Controller controller = new Controller(model, this);
+    	setController(controller);
         // Initialize the frame
         setTitle("Connect Four");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,10 +143,9 @@ public class View extends JFrame {
                 ImageIcon icon = new ImageIcon(img.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
                 JButton button = new JButton(icon);
                 int finalCol = col;
-                button.addActionListener(e -> {
-                    controller.makeMoveButton(finalCol);
-                    controller.handeButtonClick(2);
-                });
+                	button.setActionCommand("makeMove");
+                    button.putClientProperty("column", finalCol); // Store the column index as a client property
+                    button.addActionListener(controller);
                 buttonPanel.add(button);
                 columnButtons[col] = button;
             }
@@ -160,23 +164,18 @@ public class View extends JFrame {
         
         int winner = model.checkWinner();
         if (winner != 0) {
-            String message = "Player " + winner + " wins!";
+        	String message = (winner == 1) ? player1Wins : player2Wins;
+            //String message = "Player " + winner + " wins!";
             
             // Create a custom dialog
-            JDialog dialog = new JDialog(this, "Game Over", true);
+            JDialog dialog = new JDialog(this, true);
             JLabel label = new JLabel(message);
             label.setHorizontalAlignment(SwingConstants.CENTER);
             JButton okButton = new JButton("OK");
             
             // Add ActionListener to the "OK" button
-            okButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dialog.dispose(); // Close the dialog
-                    resetGame(); // reset the game board
-                    
-                }
-            });
+            okButton.addActionListener(controller);
+            okButton.setActionCommand("restart");
             
             // Set layout manager for the dialog
             dialog.setLayout(new BorderLayout());
@@ -213,7 +212,16 @@ public class View extends JFrame {
     }
     
     protected void resetGame() {
-        model.resetGame();
+    	Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JDialog) {
+                JDialog dialog = (JDialog) window;
+                if (dialog.isVisible()) {
+                    dialog.dispose();
+                }
+            }
+        }
+    	model.resetGame();
         gameStatus.resetGameTimer();
         resetTurnTimer();
         initializeBoard();
@@ -255,16 +263,15 @@ public class View extends JFrame {
         setJMenuBar(menuBar);
         
         //Set up actions
-        g1.addActionListener(e -> {
-        	this.option = 0;
-           controller.handeButtonClick(option);
-        });
+        g1.addActionListener(controller);
+        g1.setActionCommand("restart");
+        
+        g2.addActionListener(controller);
+        g2.setActionCommand("quit");
         
         
-        l1.addActionListener(e -> {
-        	this.option = 1;
-            controller.handeButtonClick(option);
-        });
+        l1.addActionListener(controller);
+        l1.setActionCommand("changeLanguage");
     }
     
     protected void setLanguage() {
@@ -303,5 +310,8 @@ public class View extends JFrame {
 
         HTPMenu = currentPhrases.getOrDefault("HTPLabel", "How To Play");
         h1.setText(HTPMenu);
+        
+        this.player1Wins = currentPhrases.getOrDefault("P1Wins", "Player 1 Wins");
+        this.player2Wins = currentPhrases.getOrDefault("P2Wins", "Player 2 Wins");
     }
 }

@@ -22,6 +22,8 @@ public class LanguageManager {
         englishPhrases.put("quitLabel", "Quit Game");
         englishPhrases.put("cLanguageLabel", "Change Language");
         englishPhrases.put("HTPLabel", "How To Play");
+        englishPhrases.put("P1Wins", "Player 1 Wins");
+        englishPhrases.put("P2Wins", "Player 2 Wins");
         english.put("phrases", englishPhrases);
         languages.put("English", english);
 
@@ -36,6 +38,8 @@ public class LanguageManager {
         frenchPhrases.put("quitLabel", "Quitter Le Jeu");
         frenchPhrases.put("cLanguageLabel", "Changer La Langue");
         frenchPhrases.put("HTPLabel", "Comment Jouer");
+        frenchPhrases.put("P1Wins", "Joueuer 1 Gagne");
+        frenchPhrases.put("P2Wins", "Joueuer 2 Gagne");
         french.put("phrases", frenchPhrases);
         languages.put("French", french);
     }
