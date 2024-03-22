@@ -31,7 +31,7 @@ public class Main {
             
             // adding the title and title panel
             JPanel titlePanel = new JPanel();
-            titlePanel.setLayout(new FlowLayout());
+            // titlePanel.setLayout(new FlowLayout());
             
             JLabel title = new JLabel("Connect 4");
             title.setFont(new Font("Arial", Font.BOLD, 40));

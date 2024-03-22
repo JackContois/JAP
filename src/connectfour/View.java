@@ -17,9 +17,10 @@ public class View extends JFrame {
     private JPanel mainPanel;
     private JPanel boardPanel;
     private JPanel playPanel;
-    private JPanel gameStatus;
+    private GameStatus gameStatus;
     private JPanel gameLog;
     private JPanel titlePanel;
+    private JLabel title;
     private JPanel infoPanel;
     protected JButton[] columnButtons;
     private BufferedImage redChipImage;
@@ -68,13 +69,18 @@ public class View extends JFrame {
         
         
         //test area
-        gameStatus = new JPanel(new BorderLayout());
-        gameStatus.add(new JLabel("test"));
+        gameStatus = new GameStatus();
+        gameStatus.setPreferredSize(new Dimension(425,275));
+        // gameStatus.add(new JLabel("test"));
         infoPanel = new JPanel(new BorderLayout());
         infoPanel.add(gameStatus, BorderLayout.NORTH);
         mainPanel.add(infoPanel, BorderLayout.EAST);
-        titlePanel = new JPanel(new BorderLayout());
-        titlePanel.add(new JLabel("test"));
+        
+        // title
+        titlePanel = new JPanel();
+        title = new JLabel("Connect 4");
+        title.setFont(new Font("Arial", Font.BOLD, 40));
+        titlePanel.add(title);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
         
         // Create board panel for drawing the board
@@ -135,6 +141,7 @@ public class View extends JFrame {
                 int finalCol = col;
                 button.addActionListener(e -> {
                     controller.makeMoveButton(finalCol);
+                    controller.handeButtonClick(2);
                 });
                 buttonPanel.add(button);
                 columnButtons[col] = button;
@@ -167,6 +174,8 @@ public class View extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dialog.dispose(); // Close the dialog
+                    resetGame(); // reset the game board
+                    
                 }
             });
             
@@ -206,8 +215,14 @@ public class View extends JFrame {
     
     protected void resetGame() {
         model.resetGame();
+        gameStatus.resetGameTimer();
+        resetTurnTimer();
         initializeBoard();
         boardPanel.repaint();
+    }
+    
+    protected void resetTurnTimer() {
+    	gameStatus.resetTurnTimer();
     }
     private void initializeMenu() {
         // Create menu bar
@@ -245,6 +260,7 @@ public class View extends JFrame {
         	this.option = 0;
            controller.handeButtonClick(option);
         });
+        
         
         l1.addActionListener(e -> {
         	this.option = 1;

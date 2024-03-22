@@ -19,15 +19,19 @@ public class Controller {
     }
     
     //This method handles all the buttons with codes (option)
-    // 0: reset game
+    // 0: reset game and timers
     // 1: change language
     public void handeButtonClick(int option) {
     	switch(option) {
     	case 0:
     		view.resetGame();
+    		view.resetTurnTimer();
     		break;
     	case 1:
     		view.setLanguage();
+    		break;
+    	case 2:
+    		view.resetTurnTimer();
     		break;
     	}
     }

@@ -84,5 +84,4 @@ public class Model {
 
         return 0; // No winner yet
     }
-
 }

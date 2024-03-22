@@ -1,3 +1,4 @@
+package connectfour;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,16 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import connectfour.Timers;
-
 public class GameStatus extends JPanel {
 
+	private Timers gameTimer;
+	private Timers turnTimer;
 	static final Color BACKGROUND_COLOR = new Color(209,209,209);
-	Timers timer;
 	public GameStatus() {
 		JPanel top = new JPanel();
 		JPanel middle = new JPanel();
 		JPanel bottom = new JPanel();
+		gameTimer = new Timers(1);
+		turnTimer = new Timers(2);
 		
 		// set the stats of the panel
 		setLayout(new BorderLayout());
@@ -49,12 +51,12 @@ public class GameStatus extends JPanel {
 		topMiddlePanel.setLayout(new FlowLayout());
 		topMiddlePanel.setBackground(BACKGROUND_COLOR);
 		topMiddlePanel.add(new JLabel("Game Timer"));
-		topMiddlePanel.add(new JLabel("0:31"));
+		topMiddlePanel.add(gameTimer);
 		
 		// adding components to the right panel
 		topRightPanel.setLayout(new FlowLayout());
 		topRightPanel.setBackground(BACKGROUND_COLOR);
-		topRightPanel.add(new JLabel("Game Status"));
+		topRightPanel.add(new JLabel("Game status"));
 		
 		// adding components to the left panel
 		topLeftPanel.setLayout(new FlowLayout());
@@ -68,9 +70,10 @@ public class GameStatus extends JPanel {
 		// adding components to the middle panel
 		middle.add(new JLabel("Players Turn: Player 1"));
 		middle.add(new JLabel("Turn Timer: "));
+		middle.add(turnTimer);
 		
 		// adding components to the bottom panel
-		JLabel playerColors = new JLabel("<html>Player one: Black<br>Player Two: Red</html>");
+		JLabel playerColors = new JLabel("<html>Player one: Red<br>Player Two: Black</html>");
 		JLabel chipsPlayed = new JLabel("<html>Chips Played: <br>Player 1: <br>Player 2: </html>");
 		playerColors.setOpaque(true);
 		playerColors.setBackground(new Color(174,174,174));
@@ -86,7 +89,14 @@ public class GameStatus extends JPanel {
 		add(bottom,BorderLayout.SOUTH);
 		
 		//add(new JLabel("label"),BorderLayout.NORTH);
-		
-		
+	}
+	protected void resetGameTimer() {
+		gameTimer.setGameSeconds(0);
+		gameTimer.setGameMinutes(0);
+	}
+	
+	protected void resetTurnTimer() {
+		turnTimer.setTurnSeconds(0);
+		turnTimer.setTurnMinutes(0);
 	}
 }
