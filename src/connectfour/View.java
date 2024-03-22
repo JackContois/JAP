@@ -63,7 +63,6 @@ public class View extends JFrame {
         // Create main panel
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
-        
         playPanel = new JPanel(new BorderLayout());
         
         

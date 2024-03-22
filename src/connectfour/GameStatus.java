@@ -19,8 +19,8 @@ public class GameStatus extends JPanel {
 		JPanel top = new JPanel();
 		JPanel middle = new JPanel();
 		JPanel bottom = new JPanel();
-		gameTimer = new Timers(1);
-		turnTimer = new Timers(2);
+		gameTimer = new Timers();
+		turnTimer = new Timers();
 		
 		// set the stats of the panel
 		setLayout(new BorderLayout());
@@ -91,12 +91,12 @@ public class GameStatus extends JPanel {
 		//add(new JLabel("label"),BorderLayout.NORTH);
 	}
 	protected void resetGameTimer() {
-		gameTimer.setGameSeconds(0);
-		gameTimer.setGameMinutes(0);
+		gameTimer.setSeconds(0);
+		gameTimer.setMinutes(0);
 	}
 	
 	protected void resetTurnTimer() {
-		turnTimer.setTurnSeconds(0);
-		turnTimer.setTurnMinutes(0);
+		turnTimer.setSeconds(0);
+		turnTimer.setMinutes(0);
 	}
 }
