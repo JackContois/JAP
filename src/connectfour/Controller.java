@@ -21,7 +21,6 @@ public class Controller implements ActionListener{
         switch (command) {
             case "restart":
                 view.resetGame();
-                view.resetTurnTimer();
                 break;
             case "quit":
             	System.exit(0);
@@ -36,8 +35,11 @@ public class Controller implements ActionListener{
                 if (row != -1) {
                 	view.checkValue(column, row);
                 }
-                view.resetTurnTimer();
                 break;
+            case "updateGameTimer":
+            	view.updateGameTimer();
+            	break;
+                
         }
     }
     

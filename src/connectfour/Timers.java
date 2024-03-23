@@ -10,12 +10,12 @@ public class Timers extends JLabel{
 	Timer timer;
 	private int seconds = 0;
 	private int minutes = 0;
-	
+
 	Timers() {
 		startTimer();
 	}
-	
-	
+
+
 	public int getSeconds() {
 		return seconds;
 	}
@@ -35,10 +35,9 @@ public class Timers extends JLabel{
 		this.minutes = minutes;
 	}
 
-
-	protected void startTimer() {
+	protected void createTimer() {
 		timer = new Timer(1000, new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				seconds++;
@@ -46,14 +45,18 @@ public class Timers extends JLabel{
 					seconds = 0;
 					minutes++;
 				}
-
+				
 				String secondsStr = String.format("%02d", seconds);
 				String minutesStr = String.format("%02d", minutes);
-
+				
 				setText(minutesStr + ":" + secondsStr);
+				timer.start();
 			}
 		});
-		timer.start();
 	}
-	
+	protected void startTimer() {
+
+		
+	}
+
 }

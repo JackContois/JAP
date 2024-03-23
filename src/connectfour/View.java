@@ -13,19 +13,36 @@ public class View extends JFrame {
     private static final int CELL_SIZE = 80;
     private static final int NUM_ROWS = 6;
     private static final int NUM_COLS = 7;
+	private static final Color GAME_STATUS_SECTION_COLOR = new Color(209,209,209);
     int option = 0;
     private JPanel mainPanel;
     private JPanel boardPanel;
     private JPanel playPanel;
-    private GameStatus gameStatus;
+    // private GameStatus gameStatus;
     private JPanel gameLog;
     private JPanel titlePanel;
     private JLabel title;
+    private JLabel activePlayerLabel;
+    private JLabel redPlayerChipsLabel;
+    private JLabel blackPlayerChipsLabel;
+    private JLabel playerTurnLabel;
+    private JLabel gameTimerLabel;
+    private JLabel turnTimerLabel;
+    private JLabel chipsPlayedLabel;
     private JPanel infoPanel;
+    private JPanel gameStatusPanel;
+    private JPanel topGSPanel;
+    private JPanel turnPanel;
+    private JPanel timersPanel;
+    private JPanel chipsPlayedPanel;
+    private JPanel topCPPanel;
+    private JPanel bottomCPPanel;
     protected JButton[] columnButtons;
     private BufferedImage redChipImage;
     private BufferedImage blackChipImage;
     private BufferedImage emptyCellImage;
+    private ImageIcon redPlayerImage;
+    private ImageIcon blackPlayerImage;
     private int[][] board;
     private Controller controller;
     private Model model;
@@ -61,7 +78,6 @@ public class View extends JFrame {
         languageManager = new LanguageManager();
         setLanguage();
         
-        
         // Load images
         loadImages();
 
@@ -70,22 +86,94 @@ public class View extends JFrame {
         add(mainPanel);
         playPanel = new JPanel(new BorderLayout());
         
-        
-        
-        //test area
-        gameStatus = new GameStatus();
-        gameStatus.setPreferredSize(new Dimension(425,275));
-        // gameStatus.add(new JLabel("test"));
+        // create info panel
         infoPanel = new JPanel(new BorderLayout());
-        infoPanel.add(gameStatus, BorderLayout.NORTH);
+        
+        // create game status panel
+        redPlayerImage = new ImageIcon(getClass().getResource("/resources/redPlayerV1.png"));
+        blackPlayerImage = new ImageIcon(getClass().getResource("/resources/blackPlayerV1.png"));
+        gameStatusPanel = new JPanel(new BorderLayout());
+        topGSPanel = new JPanel(new GridLayout(1,2));
+        turnPanel = new JPanel(new BorderLayout());
+        timersPanel = new JPanel(new BorderLayout());
+        chipsPlayedPanel = new JPanel(new BorderLayout());
+        topCPPanel = new JPanel();
+        bottomCPPanel = new JPanel();
+        
+        // setup turnPanel
+        turnPanel.setBackground(GAME_STATUS_SECTION_COLOR);
+        turnPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        activePlayerLabel = new JLabel(redPlayerImage);
+        playerTurnLabel = new JLabel ("Player's Turn: ");
+        playerTurnLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        turnPanel.add(playerTurnLabel, BorderLayout.NORTH);
+        turnPanel.add(activePlayerLabel, BorderLayout.CENTER);
+        
+        // setup timers panel
+        timersPanel.setBackground(GAME_STATUS_SECTION_COLOR);
+        timersPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        gameTimerLabel = new JLabel("Timer: ");
+        gameTimerLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        turnTimerLabel = new JLabel("Turn Timer: ");
+        turnTimerLabel.setFont(new Font("Serif", Font.PLAIN, 15));
+        timersPanel.add(gameTimerLabel, BorderLayout.NORTH);
+        timersPanel.add(turnTimerLabel, BorderLayout.CENTER);
+
+        
+        // setup top GS panel
+        topGSPanel.setPreferredSize(new Dimension(0,100));
+        topGSPanel.add(turnPanel);
+        topGSPanel.add(timersPanel);
+        
+        // setup top CP panel
+        topCPPanel.setBackground(GAME_STATUS_SECTION_COLOR);
+        chipsPlayedLabel = new JLabel("chips played");
+        chipsPlayedLabel.setFont(new Font("Serif", Font.PLAIN, 25));
+        topCPPanel.add(chipsPlayedLabel);
+        
+        // setup bottom CP panel
+        bottomCPPanel.setBackground(GAME_STATUS_SECTION_COLOR);
+        redPlayerChipsLabel = new JLabel(redPlayerImage);
+        blackPlayerChipsLabel = new JLabel(blackPlayerImage);
+        bottomCPPanel.add(redPlayerChipsLabel);
+        bottomCPPanel.add(blackPlayerChipsLabel);
+
+        
+        // setup chips played panel
+        chipsPlayedPanel.setBackground(GAME_STATUS_SECTION_COLOR);
+        chipsPlayedPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        chipsPlayedPanel.setPreferredSize(new Dimension(0,100));
+        chipsPlayedPanel.add(topCPPanel, BorderLayout.NORTH);
+        chipsPlayedPanel.add(bottomCPPanel, BorderLayout.SOUTH);
+
+
+        
+        // setup game status panel
+        gameStatusPanel.setPreferredSize(new Dimension(0,200));
+        gameStatusPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        gameStatusPanel.add(topGSPanel, BorderLayout.NORTH);
+        gameStatusPanel.add(chipsPlayedPanel, BorderLayout.SOUTH);
+        
+        
+        
+        // setup info panel
+        infoPanel.setPreferredSize(new Dimension(425,0));
+        infoPanel.add(gameStatusPanel, BorderLayout.NORTH);
+        
+        // gameStatus = new GameStatus();
+        // gameStatus.setPreferredSize(new Dimension(425,275));
+        // infoPanel.add(gameStatus, BorderLayout.NORTH);
         mainPanel.add(infoPanel, BorderLayout.EAST);
         
-        // title
+        // add title panel
         titlePanel = new JPanel();
         title = new JLabel("Connect 4");
         title.setFont(new Font("Arial", Font.BOLD, 40));
         titlePanel.add(title);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
+        
+        // create and start game timer
+        createGameTimer();
         
         // Create board panel for drawing the board
         boardPanel = new JPanel() {
@@ -120,6 +208,21 @@ public class View extends JFrame {
         // Pack and set frame visibility
         pack();
         setLocationRelativeTo(null);
+    }
+    
+    // function to update the game timer
+    public void updateGameTimer() {
+        
+    }
+    
+    // function to create and start the game timer
+    private void createGameTimer() {
+    	SwingUtilities.invokeLater(()->{
+    		Timer gameTimer = new Timer(1000, controller);
+            gameTimer.setActionCommand("updateGameTimer");
+            gameTimer.start();
+    	});
+    	
     }
 
     private void loadImages() {
@@ -222,15 +325,11 @@ public class View extends JFrame {
             }
         }
     	model.resetGame();
-        gameStatus.resetGameTimer();
-        resetTurnTimer();
         initializeBoard();
         boardPanel.repaint();
     }
     
-    protected void resetTurnTimer() {
-    	gameStatus.resetTurnTimer();
-    }
+    
     private void initializeMenu() {
         // Create menu bar
         JMenuBar menuBar = new JMenuBar();

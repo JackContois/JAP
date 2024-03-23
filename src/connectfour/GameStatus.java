@@ -12,15 +12,20 @@ import javax.swing.JTextArea;
 
 public class GameStatus extends JPanel {
 
-	private Timers gameTimer;
-	private Timers turnTimer;
+	private JLabel gameTimerLabel;
+	private JLabel turnTimerLabel;
+	private int timerSeconds = 0;
+	private int timerMinutes = 0;
 	static final Color BACKGROUND_COLOR = new Color(209,209,209);
+	
+	
 	public GameStatus() {
 		JPanel top = new JPanel();
 		JPanel middle = new JPanel();
 		JPanel bottom = new JPanel();
-		gameTimer = new Timers();
-		turnTimer = new Timers();
+		gameTimerLabel = new JLabel("temp");
+		turnTimerLabel = new JLabel("temp");
+	
 		
 		// set the stats of the panel
 		setLayout(new BorderLayout());
@@ -51,7 +56,7 @@ public class GameStatus extends JPanel {
 		topMiddlePanel.setLayout(new FlowLayout());
 		topMiddlePanel.setBackground(BACKGROUND_COLOR);
 		topMiddlePanel.add(new JLabel("Game Timer"));
-		topMiddlePanel.add(gameTimer);
+		topMiddlePanel.add(gameTimerLabel);
 		
 		// adding components to the right panel
 		topRightPanel.setLayout(new FlowLayout());
@@ -70,7 +75,7 @@ public class GameStatus extends JPanel {
 		// adding components to the middle panel
 		middle.add(new JLabel("Players Turn: Player 1"));
 		middle.add(new JLabel("Turn Timer: "));
-		middle.add(turnTimer);
+		middle.add(turnTimerLabel);
 		
 		// adding components to the bottom panel
 		JLabel playerColors = new JLabel("<html>Player one: Red<br>Player Two: Black</html>");
@@ -89,14 +94,5 @@ public class GameStatus extends JPanel {
 		add(bottom,BorderLayout.SOUTH);
 		
 		//add(new JLabel("label"),BorderLayout.NORTH);
-	}
-	protected void resetGameTimer() {
-		gameTimer.setSeconds(0);
-		gameTimer.setMinutes(0);
-	}
-	
-	protected void resetTurnTimer() {
-		turnTimer.setSeconds(0);
-		turnTimer.setMinutes(0);
 	}
 }
