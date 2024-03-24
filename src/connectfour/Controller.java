@@ -42,6 +42,9 @@ public class Controller implements ActionListener{
             case "send":
             	view.sendMessage();
             	break;
+            case "howToPlay":
+            	view.showHowToPlayDialog();
+            	break;
                 
         }
     }
