@@ -18,7 +18,6 @@ public class View extends JFrame {
     private JPanel mainPanel;
     private JPanel boardPanel;
     private JPanel playPanel;
-    // private GameStatus gameStatus;
     private JPanel gameLog;
     private JPanel titlePanel;
     private JLabel title;
@@ -37,6 +36,8 @@ public class View extends JFrame {
     private JPanel chipsPlayedPanel;
     private JPanel topCPPanel;
     private JPanel bottomCPPanel;
+    private JTextField messageField;
+    private JButton sendButton;
     protected JButton[] columnButtons;
     private BufferedImage redChipImage;
     private BufferedImage blackChipImage;
@@ -50,6 +51,7 @@ public class View extends JFrame {
     private JMenuItem g1, g2, l1, h1, c1, c2;
     private LanguageManager languageManager;
     private HashMap<String, String> currentPhrases;
+    private JTextArea gameLogTextArea;
     String newLanguage = "French";
     String gameMenu;
     String networkMenu;
@@ -61,6 +63,13 @@ public class View extends JFrame {
     String HTPMenu;
     String player1Wins;
     String player2Wins;
+    String chipsPlayed;
+    String playerTurn;
+    String timer;
+    String turnTimer;
+    String player1Plays;
+    String player2Plays;
+    String send;
     
     
     public View(Model model) {
@@ -73,10 +82,7 @@ public class View extends JFrame {
 
         initializeBoard();
         initializeMenu();
-        
-        // Setting up language
-        languageManager = new LanguageManager();
-        setLanguage();
+
         
         // Load images
         loadImages();
@@ -104,7 +110,7 @@ public class View extends JFrame {
         turnPanel.setBackground(GAME_STATUS_SECTION_COLOR);
         turnPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         activePlayerLabel = new JLabel(redPlayerImage);
-        playerTurnLabel = new JLabel ("Player's Turn: ");
+        playerTurnLabel = new JLabel ();
         playerTurnLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         turnPanel.add(playerTurnLabel, BorderLayout.NORTH);
         turnPanel.add(activePlayerLabel, BorderLayout.CENTER);
@@ -112,9 +118,9 @@ public class View extends JFrame {
         // setup timers panel
         timersPanel.setBackground(GAME_STATUS_SECTION_COLOR);
         timersPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-        gameTimerLabel = new JLabel("Timer: ");
+        gameTimerLabel = new JLabel();
         gameTimerLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        turnTimerLabel = new JLabel("Turn Timer: ");
+        turnTimerLabel = new JLabel();
         turnTimerLabel.setFont(new Font("Serif", Font.PLAIN, 15));
         timersPanel.add(gameTimerLabel, BorderLayout.NORTH);
         timersPanel.add(turnTimerLabel, BorderLayout.CENTER);
@@ -127,7 +133,7 @@ public class View extends JFrame {
         
         // setup top CP panel
         topCPPanel.setBackground(GAME_STATUS_SECTION_COLOR);
-        chipsPlayedLabel = new JLabel("chips played");
+        chipsPlayedLabel = new JLabel(); // Label
         chipsPlayedLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         topCPPanel.add(chipsPlayedLabel);
         
@@ -160,9 +166,7 @@ public class View extends JFrame {
         infoPanel.setPreferredSize(new Dimension(425,0));
         infoPanel.add(gameStatusPanel, BorderLayout.NORTH);
         
-        // gameStatus = new GameStatus();
-        // gameStatus.setPreferredSize(new Dimension(425,275));
-        // infoPanel.add(gameStatus, BorderLayout.NORTH);
+        
         mainPanel.add(infoPanel, BorderLayout.EAST);
         
         // add title panel
@@ -201,9 +205,35 @@ public class View extends JFrame {
         boardPanel.setPreferredSize(new Dimension(CELL_SIZE * NUM_COLS, CELL_SIZE * NUM_ROWS));
         playPanel.add(boardPanel, BorderLayout.CENTER);
         mainPanel.add(playPanel, BorderLayout.WEST);
+        
+        gameLogTextArea = new JTextArea(10, 20);
+        gameLogTextArea.setEditable(false);
+        JScrollPane gameLogScrollPane = new JScrollPane(gameLogTextArea);
+        gameLog = new JPanel(new BorderLayout());
+        gameLog.add(gameLogScrollPane, BorderLayout.CENTER);
 
+        infoPanel.add(gameLog, BorderLayout.CENTER);
+        
+        // Create send button for chat
+        messageField = new JTextField(20);
+        sendButton = new JButton();
+        sendButton.setActionCommand("send");
+        sendButton.addActionListener(controller);
+
+        // Add input field and button to a panel
+        JPanel inputPanel = new JPanel();
+        inputPanel.add(messageField);
+        inputPanel.add(sendButton);
+
+        // Add input panel to the bottom of the main panel
+        infoPanel.add(inputPanel, BorderLayout.SOUTH);
+        
         // Add buttons
         addButtons();
+        
+        // Setting up language
+        languageManager = new LanguageManager();
+        setLanguage();
 
         // Pack and set frame visibility
         pack();
@@ -265,10 +295,22 @@ public class View extends JFrame {
         board[row][col] = model.getBoardValue(col, row);
         boardPanel.repaint(); // Repaint the board panel when the board changes
         
+        int player = model.getCurrentPlayer();
+        if (player == 1) {
+        	 String playerMoveMessage = player1Plays + col + "\n";
+             appendToGameLog(playerMoveMessage);
+             activePlayerLabel.setIcon(redPlayerImage);
+        } else {
+        	String playerMoveMessage = player2Plays + col + "\n";
+            appendToGameLog(playerMoveMessage);
+            activePlayerLabel.setIcon(blackPlayerImage);
+        }
+       
+        
         int winner = model.checkWinner();
         if (winner != 0) {
         	String message = (winner == 1) ? player1Wins : player2Wins;
-            //String message = "Player " + winner + " wins!";
+        	appendToGameLog(message);
             
             // Create a custom dialog
             JDialog dialog = new JDialog(this, true);
@@ -293,9 +335,15 @@ public class View extends JFrame {
             // Pack and set dialog visibility
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
+            
+
         }
     }
     
+    private void appendToGameLog(String message) {
+        gameLogTextArea.append(message);
+        gameLogTextArea.setCaretPosition(gameLogTextArea.getDocument().getLength());
+    }
     
     public void setController(Controller controller) {
         this.controller = controller;
@@ -327,6 +375,7 @@ public class View extends JFrame {
     	model.resetGame();
         initializeBoard();
         boardPanel.repaint();
+        gameLogTextArea.setText("");
     }
     
     
@@ -342,8 +391,8 @@ public class View extends JFrame {
 
         // Create menu items
         g1 = new JMenuItem();
-        g2 = new JMenuItem("Quit Game");
-        l1 = new JMenuItem("Change Language");
+        g2 = new JMenuItem();
+        l1 = new JMenuItem();
         h1 = new JMenuItem("How To Play");
             
         // Add menu items to menus
@@ -412,5 +461,29 @@ public class View extends JFrame {
         
         this.player1Wins = currentPhrases.getOrDefault("P1Wins", "Player 1 Wins");
         this.player2Wins = currentPhrases.getOrDefault("P2Wins", "Player 2 Wins");
+        
+        chipsPlayed = currentPhrases.getOrDefault("chipsPlayed", "Chips Played");
+        chipsPlayedLabel.setText(chipsPlayed);
+        
+        playerTurn = currentPhrases.getOrDefault("playerTurn", "Player's Turn");
+        playerTurnLabel.setText(playerTurn);
+        
+        timer = currentPhrases.getOrDefault("timer", "Timer");
+        gameTimerLabel.setText(timer+ ": ");
+        
+        turnTimer = currentPhrases.getOrDefault("turnTimer", "Turn Timer");
+        turnTimerLabel.setText(turnTimer + ": ");
+        
+        this.player1Plays = currentPhrases.getOrDefault("player1Plays", "Player 1 Plays in Column: ");
+        this.player2Plays = currentPhrases.getOrDefault("player2Plays", "Player 2 Plays in Column: ");
+        
+        send = currentPhrases.getOrDefault("send", "Send");
+        sendButton.setText(send);
+    }
+    
+    protected void sendMessage() {
+        String message = messageField.getText();
+        appendToGameLog(message + "\n");
+        messageField.setText("");
     }
 }

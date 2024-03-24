@@ -84,4 +84,8 @@ public class Model {
 
         return 0; // No winner yet
     }
+    
+    protected int getCurrentPlayer() {
+    	return player;
+    }
 }

@@ -39,6 +39,9 @@ public class Controller implements ActionListener{
             case "updateGameTimer":
             	view.updateGameTimer();
             	break;
+            case "send":
+            	view.sendMessage();
+            	break;
                 
         }
     }

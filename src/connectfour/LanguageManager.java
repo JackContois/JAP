@@ -24,6 +24,13 @@ public class LanguageManager {
         englishPhrases.put("HTPLabel", "How To Play");
         englishPhrases.put("P1Wins", "Player 1 Wins");
         englishPhrases.put("P2Wins", "Player 2 Wins");
+        englishPhrases.put("chipsPlayed", "Chips Played");
+        englishPhrases.put("playerTurn", "Player's Turn");
+        englishPhrases.put("timer", "Timer");
+        englishPhrases.put("turnTimer", "Turn Timer");
+        englishPhrases.put("player1Plays", "Player 1 Plays In Column: ");
+        englishPhrases.put("player2Plays", "Player 2 Plays In Column: ");
+        englishPhrases.put("send", "Send");
         english.put("phrases", englishPhrases);
         languages.put("English", english);
 
@@ -40,6 +47,13 @@ public class LanguageManager {
         frenchPhrases.put("HTPLabel", "Comment Jouer");
         frenchPhrases.put("P1Wins", "Joueuer 1 Gagne");
         frenchPhrases.put("P2Wins", "Joueuer 2 Gagne");
+        frenchPhrases.put("chipsPlayed", "Jetons Joués");
+        frenchPhrases.put("playerTurn", "Le Tour De Joueuer");
+        frenchPhrases.put("timer", "Minuteur");
+        frenchPhrases.put("turnTimer", "Minuteur Du Tour");
+        frenchPhrases.put("player1Plays", "Joueur 1 Joue Dans La Colonne: ");
+        frenchPhrases.put("player2Plays", "Joueur 2 Joue Dans La Colonne: ");
+        frenchPhrases.put("send", "Enoyer");
         french.put("phrases", frenchPhrases);
         languages.put("French", french);
     }
