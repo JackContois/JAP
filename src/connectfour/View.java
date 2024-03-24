@@ -70,6 +70,7 @@ public class View extends JFrame {
     String player1Plays;
     String player2Plays;
     String send;
+    String drawMessage;
     
     
     public View(Model model) {
@@ -308,7 +309,7 @@ public class View extends JFrame {
        
         
         int winner = model.checkWinner();
-        if (winner != 0) {
+        if (winner != 0 & winner != -1) {
         	String message = (winner == 1) ? player1Wins : player2Wins;
         	appendToGameLog(message);
             
@@ -337,6 +338,32 @@ public class View extends JFrame {
             dialog.setVisible(true);
             
 
+        } else if (winner == -1) {
+        	String message = drawMessage;
+        	// Create a custom dialog
+            JDialog dialog = new JDialog(this, true);
+            JLabel label = new JLabel(message);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            JButton okButton = new JButton("OK");
+            
+            // Add ActionListener to the "OK" button
+            okButton.addActionListener(controller);
+            okButton.setActionCommand("restart");
+            
+            // Set layout manager for the dialog
+            dialog.setLayout(new BorderLayout());
+            
+            // Add components to the dialog
+            dialog.add(label, BorderLayout.CENTER);
+            dialog.add(okButton, BorderLayout.SOUTH);
+            
+            // Set the size of the dialog
+            dialog.setSize(new Dimension(300, 150)); // Set the desired size here
+            
+            // Pack and set dialog visibility
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            
         }
     }
     
@@ -479,6 +506,8 @@ public class View extends JFrame {
         
         send = currentPhrases.getOrDefault("send", "Send");
         sendButton.setText(send);
+        
+        this.drawMessage = currentPhrases.getOrDefault("draw", "Draw");
     }
     
     protected void sendMessage() {

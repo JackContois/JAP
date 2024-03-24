@@ -42,6 +42,19 @@ public class Model {
     }
     
     public int checkWinner() {
+    	
+    	boolean isBoardFull = true;
+        for (int col = 0; col < NUM_COLS; col++) {
+            if (board[0][col] == 0) {
+                isBoardFull = false;
+                break;
+            }
+        }
+        
+        if (isBoardFull) {
+            return -1;
+        }
+        
         // Check horizontally
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col <= NUM_COLS - 4; col++) {
