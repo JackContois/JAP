@@ -25,8 +25,11 @@ public class Controller implements ActionListener{
             case "quit":
             	System.exit(0);
             	break;
-            case "changeLanguage":
-                view.setLanguage();
+            case "changeLanguageEnglish":
+                view.setLanguage("English");
+                break;
+            case "changeLanguageFrench":
+                view.setLanguage("French");
                 break;
             case "makeMove":
                 JButton button = (JButton) e.getSource();
@@ -45,7 +48,9 @@ public class Controller implements ActionListener{
             case "howToPlay":
             	view.showHowToPlayDialog();
             	break;
-                
+            case "deleteDialog":
+            	view.deleteDialog();
+            	break;
         }
     }
     
