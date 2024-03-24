@@ -60,16 +60,17 @@ javac -Xlint -cp ".;%SRCDIR%;%LIBDIR%/*" %MAINCLASSSRC% -d %BINDIR% 2> %BINERR%
 
 ECHO "2. Creating Jar ..................."
 cd bin
-ECHO "jar cvvvfe %JARNAME% %MAINCLASSBIN% . > ../%JAROUT% 2> ../%JARERR%"
 jar cvvvfe %JARNAME% %MAINCLASSBIN% . > ../%JAROUT% 2> ../%JARERR%
 
 ECHO "3. Creating Javadoc ..............."
 cd ..
+ECHO javadoc -cp ".;%BINDIR%;../%LIBDIR%/*" --module-path "%LIBDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
 javadoc -cp ".;%BINDIR%;../%LIBDIR%/*" --module-path "%LIBDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
 
 cd bin
 ECHO "4. Running Jar ...................."
-start java --module-path "../%LIBDIR%" -jar %JARNAME%
+start java -cp %JARNAME% connectfour.Main
+
 cd ..
 
 ECHO "[END OF SCRIPT -------------------]"
