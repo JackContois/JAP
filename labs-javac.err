@@ -2,7 +2,28 @@ warning: [path] Invalid filename: lib/*
 src\connectfour\View.java:12: warning: [serial] serializable class View has no definition of serialVersionUID
 public class View extends JFrame {
        ^
-src\connectfour\TimeKeeper.java:7: warning: [serial] serializable class TimeKeeper has no definition of serialVersionUID
+src\connectfour\View.java:48: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private BufferedImage redChipImage;
+	                      ^
+src\connectfour\View.java:49: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private BufferedImage blackChipImage;
+	                      ^
+src\connectfour\View.java:50: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private BufferedImage emptyCellImage;
+	                      ^
+src\connectfour\View.java:54: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private Controller controller;
+	                   ^
+src\connectfour\View.java:55: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private Model model;
+	              ^
+src\connectfour\View.java:58: warning: [serial] non-transient instance field of a serializable class declared with a non-serializable type
+	private LanguageManager languageManager;
+	                        ^
+src\connectfour\View.java:85: warning: [this-escape] possible 'this' escape before subclass is fully initialized
+		SwingUtilities.invokeLater(()->{
+		                           ^
+src\connectfour\TimeKeeper.java:6: warning: [serial] serializable class TimeKeeper has no definition of serialVersionUID
 public class TimeKeeper extends JLabel{
        ^
-3 warnings
+10 warnings

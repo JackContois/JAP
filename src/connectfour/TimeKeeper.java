@@ -1,6 +1,5 @@
 package connectfour;
 
-import javax.swing.Timer;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 /* fix this bloody class*/
