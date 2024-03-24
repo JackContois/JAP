@@ -17,9 +17,9 @@ CLS
 
 SET LIBDIR=lib
 SET SRCDIR=src
-SET BINDIR=bin
+SET BINDIR=bin/connectfour
 SET BINERR=labs-javac.err
-SET JARNAME=JAPLabsSwing.jar
+SET JARNAME=A22connect4.jar
 SET JAROUT=labs-jar.out
 SET JARERR=labs-jar.err
 SET DOCDIR=doc
