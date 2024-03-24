@@ -1,4 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3f88be3b1029fb0ae28a8db899e697cedf6c7893
 added manifest
 adding: connectfour/(in = 0) (out= 0)(stored 0%)
 adding: connectfour/Controller.class(in = 2237) (out= 1376)(deflated 38%)
@@ -14,6 +18,10 @@ adding: resources/black.png(in = 733) (out= 738)(deflated 0%)
 adding: resources/blackPlayerV1.png(in = 5141) (out= 2594)(deflated 49%)
 adding: resources/empty.png(in = 351) (out= 354)(deflated 0%)
 adding: resources/red.png(in = 830) (out= 835)(deflated 0%)
+<<<<<<< HEAD
 adding: resources/redPlayerV1.png(in = 6335) (out= 3816)(deflated 39%)
 =======
 >>>>>>> 80f54ffa5c0d0a0adc29708a87e9bc9befadca91
+=======
+adding: resources/redPlayerV1.png(in = 6335) (out= 3816)(deflated 39%)
+>>>>>>> 3f88be3b1029fb0ae28a8db899e697cedf6c7893
