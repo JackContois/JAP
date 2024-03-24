@@ -38,6 +38,7 @@ public class View extends JFrame {
     private JPanel chipsPlayedPanel;
     private JPanel topCPPanel;
     private JPanel bottomCPPanel;
+    private JTextArea instructionsTextArea;
     private JTextField messageField;
     private JButton sendButton;
     protected JButton[] columnButtons;
@@ -50,7 +51,7 @@ public class View extends JFrame {
     private Controller controller;
     private Model model;
     private JMenu g, n, l, h, c;
-    private JMenuItem g1, g2, l1, h1, c1, c2;
+    private JMenuItem g1, g2, l1, h1, c1, c2, l2;
     private LanguageManager languageManager;
     private HashMap<String, String> currentPhrases;
     private JTextArea gameLogTextArea;
@@ -62,6 +63,7 @@ public class View extends JFrame {
     String restartMenu;
     String quitMenu;
     String cLanguageMenu;
+    String cLanguageMenu2;
     String HTPMenu;
     String player1Wins;
     String player2Wins;
@@ -73,6 +75,7 @@ public class View extends JFrame {
     String player2Plays;
     String send;
     String drawMessage;
+    String rules;
     
     
     public View(Model model) {
@@ -86,10 +89,11 @@ public class View extends JFrame {
         initializeBoard();
         initializeMenu();
 
-        
         // Load images
         loadImages();
-
+        
+        instructionsTextArea = new JTextArea("");
+        
         // Create main panel
         mainPanel = new JPanel(new BorderLayout());
         add(mainPanel);
@@ -97,6 +101,7 @@ public class View extends JFrame {
         
         // create info panel
         infoPanel = new JPanel(new BorderLayout());
+        
         
         // create game status panel
         redPlayerImage = new ImageIcon(getClass().getResource("/resources/redPlayerV1.png"));
@@ -136,7 +141,7 @@ public class View extends JFrame {
         
         // setup top CP panel
         topCPPanel.setBackground(GAME_STATUS_SECTION_COLOR);
-        chipsPlayedLabel = new JLabel(); // Label
+        chipsPlayedLabel = new JLabel();
         chipsPlayedLabel.setFont(new Font("Serif", Font.PLAIN, 25));
         topCPPanel.add(chipsPlayedLabel);
         
@@ -235,12 +240,13 @@ public class View extends JFrame {
         // Add input panel to the bottom of the main panel
         infoPanel.add(inputPanel, BorderLayout.SOUTH);
         
+        
         // Add buttons
         addButtons();
         
         // Setting up language
         languageManager = new LanguageManager();
-        setLanguage();
+        setLanguage("English");
 
         // Pack and set frame visibility
         pack();
@@ -304,12 +310,12 @@ public class View extends JFrame {
         
         int player = model.getCurrentPlayer();
         if (player == 1) {
-        	 String playerMoveMessage = player1Plays + col + "\n";
+        	String playerMoveMessage = player2Plays + col + "\n";
              appendToGameLog(playerMoveMessage);
              activePlayerLabel.setIcon(redPlayerImage);
              blackChipsPlayed++; 
         } else {
-        	String playerMoveMessage = player2Plays + col + "\n";
+        	String playerMoveMessage = player1Plays + col + "\n";
             appendToGameLog(playerMoveMessage);
             activePlayerLabel.setIcon(blackPlayerImage);
             redChipsPlayed++;
@@ -321,7 +327,7 @@ public class View extends JFrame {
         int winner = model.checkWinner();
         if (winner != 0 & winner != -1) {
         	String message = (winner == 1) ? player1Wins : player2Wins;
-        	appendToGameLog(message);
+        	appendToGameLog(message + "\n");
         	disableColumnButtons();
             // Create a custom dialog
             JDialog dialog = new JDialog(this, true);
@@ -331,7 +337,7 @@ public class View extends JFrame {
             
             // Add ActionListener to the "OK" button
             okButton.addActionListener(controller);
-            okButton.setActionCommand("restart");
+            okButton.setActionCommand("deleteDialog");
             
             // Set layout manager for the dialog
             dialog.setLayout(new BorderLayout());
@@ -358,7 +364,7 @@ public class View extends JFrame {
             
             // Add ActionListener to the "OK" button
             okButton.addActionListener(controller);
-            okButton.setActionCommand("restart");
+            okButton.setActionCommand("deleteDialog");
             
             // Set layout manager for the dialog
             dialog.setLayout(new BorderLayout());
@@ -400,15 +406,7 @@ public class View extends JFrame {
     }
     
     protected void resetGame() {
-    	Window[] windows = Window.getWindows();
-        for (Window window : windows) {
-            if (window instanceof JDialog) {
-                JDialog dialog = (JDialog) window;
-                if (dialog.isVisible()) {
-                    dialog.dispose();
-                }
-            }
-        }
+    	deleteDialog();
     	model.resetGame();
         initializeBoard();
         boardPanel.repaint();
@@ -435,12 +433,14 @@ public class View extends JFrame {
         g1 = new JMenuItem();
         g2 = new JMenuItem();
         l1 = new JMenuItem();
-        h1 = new JMenuItem("How To Play");
+        l2 = new JMenuItem();
+        h1 = new JMenuItem();
             
         // Add menu items to menus
         g.add(g1);
         g.add(g2);
         l.add(l1);
+        l.add(l2);
         h.add(h1);
         
         // Add menus to menu bar
@@ -461,22 +461,34 @@ public class View extends JFrame {
         
         
         l1.addActionListener(controller);
-        l1.setActionCommand("changeLanguage");
+        l1.setActionCommand("changeLanguageEnglish");
+        
+        l2.addActionListener(controller);
+        l2.setActionCommand("changeLanguageFrench");
         
         h1.addActionListener(controller);
         h1.setActionCommand("howToPlay");
     }
     
-    protected void setLanguage() {
+    protected void setLanguage(String language) {
         // Toggle between English and French
-        newLanguage = (newLanguage.equals("French")) ? "English" : "French";
-        currentPhrases = languageManager.getPhrases(newLanguage);
+        currentPhrases = languageManager.getPhrases(language);
 
         // Update GUI components with text from currentPhrases
         updateLabels();
     }
 
-
+    protected void deleteDialog() {
+    	Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JDialog) {
+                JDialog dialog = (JDialog) window;
+                if (dialog.isVisible()) {
+                    dialog.dispose();
+                }
+            }
+        }
+    }
     
     private void updateLabels() {
     	gameMenu = currentPhrases.getOrDefault("gameLabel", "Game");
@@ -498,8 +510,11 @@ public class View extends JFrame {
         quitMenu = currentPhrases.getOrDefault("quitLabel", "Quit Game");
         g2.setText(quitMenu);
         
-        cLanguageMenu = currentPhrases.getOrDefault("cLanguageLabel", "Change Language");
+        cLanguageMenu = currentPhrases.getOrDefault("cLanguageLabelEnglish", "English");
         l1.setText(cLanguageMenu);
+        
+        cLanguageMenu2 = currentPhrases.getOrDefault("cLanguageLabelFrench", "French");
+        l2.setText(cLanguageMenu2);
 
         HTPMenu = currentPhrases.getOrDefault("HTPLabel", "How To Play");
         h1.setText(HTPMenu);
@@ -526,6 +541,9 @@ public class View extends JFrame {
         sendButton.setText(send);
         
         this.drawMessage = currentPhrases.getOrDefault("draw", "Draw");
+        
+        this.rules = currentPhrases.getOrDefault("rules", "Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
+
     }
     
     protected void sendMessage() {
@@ -551,20 +569,21 @@ public class View extends JFrame {
     
     protected void showHowToPlayDialog() {
         // Create a new dialog
-        JDialog howToPlayDialog = new JDialog(this, "How to Play", true);
+        JDialog howToPlayDialog = new JDialog(this, HTPMenu, true);
 
         // Set layout manager
         howToPlayDialog.setLayout(new BorderLayout());
-
+        
+        String message = rules;
         // Add instructions text
-        JTextArea instructionsTextArea = new JTextArea();
-        instructionsTextArea.setText("Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
+        instructionsTextArea = new JTextArea(message);
         instructionsTextArea.setEditable(false);
         howToPlayDialog.add(instructionsTextArea, BorderLayout.CENTER);
 
         // Add a close button
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> howToPlayDialog.dispose());
+        closeButton.setActionCommand("deleteDialog");
+        closeButton.addActionListener(controller);
         howToPlayDialog.add(closeButton, BorderLayout.SOUTH);
 
         // Set dialog properties
