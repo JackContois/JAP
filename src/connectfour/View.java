@@ -353,19 +353,21 @@ public class View extends JFrame {
 		board[row][col] = model.getBoardValue(col, row);
 		boardPanel.repaint();
 		int winner = model.checkWinner();
-		if (winner == 0) {
 			int player = model.getCurrentPlayer();
 			if (player == 1) {
 				String playerMoveMessage = player2Plays + col + "\n";
 				appendToGameLog(playerMoveMessage);
-				activePlayerLabel.setIcon(redPlayerImage);
+				if (winner == 0) {
+					activePlayerLabel.setIcon(redPlayerImage);
+				}
 				blackChipsPlayed++; 
 			} else {
 				String playerMoveMessage = player1Plays + col + "\n";
 				appendToGameLog(playerMoveMessage);
-				activePlayerLabel.setIcon(blackPlayerImage);
 				redChipsPlayed++;
-			}
+				if (winner == 0) {
+					activePlayerLabel.setIcon(blackPlayerImage);
+				}
 		}
 
 		redPlayerChipsLabel.setText(": " + redChipsPlayed);
