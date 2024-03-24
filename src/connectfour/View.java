@@ -351,25 +351,27 @@ public class View extends JFrame {
 
 	public int checkValue(int col, int row) {
 		board[row][col] = model.getBoardValue(col, row);
-		boardPanel.repaint(); // Repaint the board panel when the board changes
-
-		int player = model.getCurrentPlayer();
-		if (player == 1) {
-			String playerMoveMessage = player2Plays + col + "\n";
-			appendToGameLog(playerMoveMessage);
-			activePlayerLabel.setIcon(redPlayerImage);
-			blackChipsPlayed++; 
-		} else {
-			String playerMoveMessage = player1Plays + col + "\n";
-			appendToGameLog(playerMoveMessage);
-			activePlayerLabel.setIcon(blackPlayerImage);
-			redChipsPlayed++;
+		boardPanel.repaint();
+		int winner = model.checkWinner();
+		if (winner == 0) {
+			int player = model.getCurrentPlayer();
+			if (player == 1) {
+				String playerMoveMessage = player2Plays + col + "\n";
+				appendToGameLog(playerMoveMessage);
+				activePlayerLabel.setIcon(redPlayerImage);
+				blackChipsPlayed++; 
+			} else {
+				String playerMoveMessage = player1Plays + col + "\n";
+				appendToGameLog(playerMoveMessage);
+				activePlayerLabel.setIcon(blackPlayerImage);
+				redChipsPlayed++;
+			}
 		}
 
 		redPlayerChipsLabel.setText(": " + redChipsPlayed);
 		blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
 
-		int winner = model.checkWinner();
+		
 		if (winner != 0 & winner != -1) {
 			realTime.stop();
 			String message = (winner == 1) ? player1Wins : player2Wins;
@@ -465,6 +467,7 @@ public class View extends JFrame {
 		redPlayerChipsLabel.setText(": " + redChipsPlayed);
 		blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
 		enableColumnButtons();
+		activePlayerLabel.setIcon(redPlayerImage);
 	}
 
 

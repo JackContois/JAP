@@ -1,14 +1,8 @@
 warning: [path] Invalid filename: lib/*
-src\Board.java:7: warning: [serial] serializable class Board has no definition of serialVersionUID
-public class Board extends JPanel {
+src\connectfour\View.java:12: warning: [serial] serializable class View has no definition of serialVersionUID
+public class View extends JFrame {
        ^
-src\Menu.java:3: warning: [serial] serializable class Menu has no definition of serialVersionUID
-public class Menu extends JMenuBar {
+src\connectfour\TimeKeeper.java:7: warning: [serial] serializable class TimeKeeper has no definition of serialVersionUID
+public class TimeKeeper extends JLabel{
        ^
-src\GameLog.java:3: warning: [serial] serializable class GameLog has no definition of serialVersionUID
-public class GameLog extends JTextArea {
-       ^
-src\GameStatus.java:12: warning: [serial] serializable class GameStatus has no definition of serialVersionUID
-public class GameStatus extends JPanel {
-       ^
-5 warnings
+3 warnings
