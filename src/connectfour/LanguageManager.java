@@ -34,6 +34,7 @@ public class LanguageManager {
         englishPhrases.put("send", "Send");
         englishPhrases.put("draw", "Tie Game");
         englishPhrases.put("rules", "Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
+        englishPhrases.put("close", "Close");
         english.put("phrases", englishPhrases);
         languages.put("English", english);
 
@@ -61,7 +62,7 @@ public class LanguageManager {
         frenchPhrases.put("draw", "Match Nul");
         frenchPhrases.put("rules", "Instructions:\n1. Chaque joueur d\u00E9pose \u00E0 tour de r\u00F4le un jeton dans l'une des colonnes.\n2. Le jeton tombe dans l'emplacement vide le plus bas de la colonne s\u00E9lectionn\u00E9e.\n3. Le premier joueur \u00E0 connecter quatre jetons dans une rang\u00E9e gagne.\n4. La connexion peut \u00EAtre horizontale, verticale ou diagonale.");
         frenchPhrases.put("rules", "Instructions:\n1. Chaque joueur d\u00E9pose \u00E0 tour de r\u00F4le un jeton dans l'une des colonnes.\n2. Le jeton tombe dans l'emplacement vide le plus bas de la colonne s\u00E9lectionn\u00E9e.\n3. Le premier joueur \u00E0 connecter quatre jetons dans une rang\u00E9e gagne.\n4. La connexion peut \u00EAtre horizontale, verticale ou diagonale.");
-
+        frenchPhrases.put("close", "Fermer");
         french.put("phrases", frenchPhrases);
         languages.put("French", french);
     }

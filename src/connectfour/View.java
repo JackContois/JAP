@@ -44,6 +44,7 @@ public class View extends JFrame {
 	private JTextArea instructionsTextArea;
 	private JTextField messageField;
 	private JButton sendButton;
+	private JButton closeButton;
 	protected JButton[] columnButtons;
 	private BufferedImage redChipImage;
 	private BufferedImage blackChipImage;
@@ -54,7 +55,7 @@ public class View extends JFrame {
 	private Controller controller;
 	private Model model;
 	private JMenu g, n, l, h, c;
-	private JMenuItem g1, g2, l1, h1, c1, c2, l2;
+	private JMenuItem g1, g2, l1, h1, l2;
 	private LanguageManager languageManager;
 	private HashMap<String, String> currentPhrases;
 	private JTextArea gameLogTextArea;
@@ -79,6 +80,7 @@ public class View extends JFrame {
 	String send;
 	String drawMessage;
 	String rules;
+	String close;
 
 
 	public View(Model model) {
@@ -97,6 +99,7 @@ public class View extends JFrame {
 			loadImages();
 
 			instructionsTextArea = new JTextArea("");
+			closeButton = new JButton("");
 
 			// Create main panel
 			mainPanel = new JPanel(new BorderLayout());
@@ -597,7 +600,9 @@ public class View extends JFrame {
 		this.drawMessage = currentPhrases.getOrDefault("draw", "Draw");
 
 		this.rules = currentPhrases.getOrDefault("rules", "Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
-
+		
+		close = currentPhrases.getOrDefault("close", "Close");
+		closeButton.setText(close);
 	}
 
 	protected void sendMessage() {
@@ -631,11 +636,12 @@ public class View extends JFrame {
 		String message = rules;
 		// Add instructions text
 		instructionsTextArea = new JTextArea(message);
-		instructionsTextArea.setEditable(false);
+		instructionsTextArea.setEditable(false); 
 		howToPlayDialog.add(instructionsTextArea, BorderLayout.CENTER);
 
 		// Add a close button
-		JButton closeButton = new JButton("Close");
+		String message2 = close;
+		closeButton = new JButton(message2);
 		closeButton.setActionCommand("deleteDialog");
 		closeButton.addActionListener(controller);
 		howToPlayDialog.add(closeButton, BorderLayout.SOUTH);
