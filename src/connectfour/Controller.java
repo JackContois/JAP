@@ -21,6 +21,11 @@ public class Controller implements ActionListener{
         switch (command) {
             case "restart":
                 view.resetGame();
+                view.resetGameTimer();
+                view.resetTurnTimer();
+                view.stopTimerThread();
+                view.startTimerThread();
+              
                 break;
             case "quit":
             	System.exit(0);
@@ -36,11 +41,15 @@ public class Controller implements ActionListener{
                 int column = getColumnFromButton(button);
                 int row = model.makeMove(column);
                 if (row != -1) {
-                	view.checkValue(column, row);
+                	int winner = view.checkValue(column, row);
+                	if(winner==0) {
+                		view.resetTurnTimer();
+                	}
                 }
                 break;
-            case "updateGameTimer":
+            case "updateTimer":
             	view.updateGameTimer();
+            	view.updateTurnTimer();
             	break;
             case "send":
             	view.sendMessage();

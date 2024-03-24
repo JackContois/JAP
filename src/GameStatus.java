@@ -9,12 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import connectfour.Timers;
+import connectfour.TimeKeeper;
 
 public class GameStatus extends JPanel {
 
 	static final Color BACKGROUND_COLOR = new Color(209,209,209);
-	Timers timer;
+	TimeKeeper timer;
 	public GameStatus() {
 		JPanel top = new JPanel();
 		JPanel middle = new JPanel();
