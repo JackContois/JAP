@@ -13,6 +13,8 @@ public class View extends JFrame {
     private static final int CELL_SIZE = 80;
     private static final int NUM_ROWS = 6;
     private static final int NUM_COLS = 7;
+    private int redChipsPlayed;
+    private int blackChipsPlayed;
 	private static final Color GAME_STATUS_SECTION_COLOR = new Color(209,209,209);
     int option = 0;
     private JPanel mainPanel;
@@ -70,6 +72,7 @@ public class View extends JFrame {
     String player1Plays;
     String player2Plays;
     String send;
+    String drawMessage;
     
     
     public View(Model model) {
@@ -143,6 +146,8 @@ public class View extends JFrame {
         blackPlayerChipsLabel = new JLabel(blackPlayerImage);
         bottomCPPanel.add(redPlayerChipsLabel);
         bottomCPPanel.add(blackPlayerChipsLabel);
+        redPlayerChipsLabel.setText(": " + redChipsPlayed);
+        blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
 
         
         // setup chips played panel
@@ -151,6 +156,8 @@ public class View extends JFrame {
         chipsPlayedPanel.setPreferredSize(new Dimension(0,100));
         chipsPlayedPanel.add(topCPPanel, BorderLayout.NORTH);
         chipsPlayedPanel.add(bottomCPPanel, BorderLayout.SOUTH);
+        redChipsPlayed = 0;
+        blackChipsPlayed = 0;
 
 
         
@@ -277,7 +284,7 @@ public class View extends JFrame {
                 JButton button = new JButton(icon);
                 int finalCol = col;
                 	button.setActionCommand("makeMove");
-                    button.putClientProperty("column", finalCol); // Store the column index as a client property
+                    button.putClientProperty("column", finalCol);
                     button.addActionListener(controller);
                 buttonPanel.add(button);
                 columnButtons[col] = button;
@@ -300,18 +307,22 @@ public class View extends JFrame {
         	 String playerMoveMessage = player1Plays + col + "\n";
              appendToGameLog(playerMoveMessage);
              activePlayerLabel.setIcon(redPlayerImage);
+             blackChipsPlayed++; 
         } else {
         	String playerMoveMessage = player2Plays + col + "\n";
             appendToGameLog(playerMoveMessage);
             activePlayerLabel.setIcon(blackPlayerImage);
+            redChipsPlayed++;
         }
        
+        redPlayerChipsLabel.setText(": " + redChipsPlayed);
+        blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
         
         int winner = model.checkWinner();
-        if (winner != 0) {
+        if (winner != 0 & winner != -1) {
         	String message = (winner == 1) ? player1Wins : player2Wins;
         	appendToGameLog(message);
-            
+        	disableColumnButtons();
             // Create a custom dialog
             JDialog dialog = new JDialog(this, true);
             JLabel label = new JLabel(message);
@@ -330,13 +341,39 @@ public class View extends JFrame {
             dialog.add(okButton, BorderLayout.SOUTH);
             
             // Set the size of the dialog
-            dialog.setSize(new Dimension(300, 150)); // Set the desired size here
+            dialog.setSize(new Dimension(300, 150));
             
             // Pack and set dialog visibility
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
             
 
+        } else if (winner == -1) {
+        	String message = drawMessage;
+        	// Create a custom dialog
+            JDialog dialog = new JDialog(this, true);
+            JLabel label = new JLabel(message);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            JButton okButton = new JButton("OK");
+            
+            // Add ActionListener to the "OK" button
+            okButton.addActionListener(controller);
+            okButton.setActionCommand("restart");
+            
+            // Set layout manager for the dialog
+            dialog.setLayout(new BorderLayout());
+            
+            // Add components to the dialog
+            dialog.add(label, BorderLayout.CENTER);
+            dialog.add(okButton, BorderLayout.SOUTH);
+            
+            // Set the size of the dialog
+            dialog.setSize(new Dimension(300, 150));
+            
+            // Pack and set dialog visibility
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            
         }
     }
     
@@ -376,6 +413,11 @@ public class View extends JFrame {
         initializeBoard();
         boardPanel.repaint();
         gameLogTextArea.setText("");
+        redChipsPlayed = 0;
+        blackChipsPlayed = 0;
+        redPlayerChipsLabel.setText(": " + redChipsPlayed);
+        blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
+        enableColumnButtons();
     }
     
     
@@ -420,6 +462,9 @@ public class View extends JFrame {
         
         l1.addActionListener(controller);
         l1.setActionCommand("changeLanguage");
+        
+        h1.addActionListener(controller);
+        h1.setActionCommand("howToPlay");
     }
     
     protected void setLanguage() {
@@ -479,11 +524,52 @@ public class View extends JFrame {
         
         send = currentPhrases.getOrDefault("send", "Send");
         sendButton.setText(send);
+        
+        this.drawMessage = currentPhrases.getOrDefault("draw", "Draw");
     }
     
     protected void sendMessage() {
         String message = messageField.getText();
         appendToGameLog(message + "\n");
         messageField.setText("");
+    }
+    private void setColumnButtonsEnabled(boolean enabled) {
+        for (JButton button : columnButtons) {
+            button.setEnabled(enabled);
+        }
+    }
+    
+    // After a winner is determined or when the game ends
+    protected void disableColumnButtons() {
+        setColumnButtonsEnabled(false);
+    }
+
+    // When the game is reset
+    protected void enableColumnButtons() {
+        setColumnButtonsEnabled(true);
+    }
+    
+    protected void showHowToPlayDialog() {
+        // Create a new dialog
+        JDialog howToPlayDialog = new JDialog(this, "How to Play", true);
+
+        // Set layout manager
+        howToPlayDialog.setLayout(new BorderLayout());
+
+        // Add instructions text
+        JTextArea instructionsTextArea = new JTextArea();
+        instructionsTextArea.setText("Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
+        instructionsTextArea.setEditable(false);
+        howToPlayDialog.add(instructionsTextArea, BorderLayout.CENTER);
+
+        // Add a close button
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> howToPlayDialog.dispose());
+        howToPlayDialog.add(closeButton, BorderLayout.SOUTH);
+
+        // Set dialog properties
+        howToPlayDialog.setSize(500, 200);
+        howToPlayDialog.setLocationRelativeTo(this);
+        howToPlayDialog.setVisible(true);
     }
 }

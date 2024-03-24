@@ -31,6 +31,7 @@ public class LanguageManager {
         englishPhrases.put("player1Plays", "Player 1 Plays In Column: ");
         englishPhrases.put("player2Plays", "Player 2 Plays In Column: ");
         englishPhrases.put("send", "Send");
+        englishPhrases.put("draw", "Tie Game");
         english.put("phrases", englishPhrases);
         languages.put("English", english);
 
@@ -54,6 +55,7 @@ public class LanguageManager {
         frenchPhrases.put("player1Plays", "Joueur 1 Joue Dans La Colonne: ");
         frenchPhrases.put("player2Plays", "Joueur 2 Joue Dans La Colonne: ");
         frenchPhrases.put("send", "Enoyer");
+        frenchPhrases.put("draw", "Match Nul");
         french.put("phrases", frenchPhrases);
         languages.put("French", french);
     }
