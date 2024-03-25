@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>320</y>
+      <w>220</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>View
+-
+_- CELL_SIZE: int_
+_NUM_ROWS: int_
+_NUM_COLS: int_
+- emptyCell: BufferedImage
+- redCell : BufferedImage
+- blackCell : BufferedImage
+board: CellState[][]
+-
+_+ main(): void_
++ displayGameStatus(): void
++ displayGameLog(): void
++ displayArrowButtons(): void
++ displayWinScreen(): void
++ displayChatWindow(): void
+# paintComponent(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>60</y>
+      <w>200</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Model
+-
++ updateGameBoard():void
++ checkWin(): boolean
++ updateLanguage():void
++ updateGameStatus(): void
++ updateGameLog(): void
++ generateHelpScreen(): void
++ generateChatWindow(): void
++ generateWinScreen(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>320</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Controller
+-
++ makeTurn():void
++ restartGame():void
++ changeLanguage():void
++ howToPlay():void
++ toggleChat():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>230</y>
+      <w>60</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>230</y>
+      <w>70</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>150</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+CellState
+-
+EMPTY,
+PLAYER_ONE,
+PLAYER_TWO</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>80</x>
+      <y>250</y>
+      <w>60</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>40.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
