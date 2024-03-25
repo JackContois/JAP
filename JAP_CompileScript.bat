@@ -15,7 +15,7 @@ CLS
 :: If your code needs no external libraries, remove all references to LIBDIR
 :: in this script.
 
-SET LIBDIR=lib
+
 SET SRCDIR=src
 SET BINDIR=bin/connectfour
 SET BINERR=labs-javac.err
@@ -56,7 +56,7 @@ ECHO "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 ECHO "[LABS SCRIPT ---------------------]"
 
 ECHO "1. Compiling ......................"
-javac -Xlint -cp ".;%SRCDIR%;%LIBDIR%/*" %MAINCLASSSRC% -d %BINDIR% 2> %BINERR%
+javac -Xlint -cp ".;%SRCDIR%" %MAINCLASSSRC% -d %BINDIR% 2> %BINERR%
 
 ECHO "2. Creating Jar ..................."
 cd bin
@@ -64,7 +64,7 @@ jar cvvvfe %JARNAME% %MAINCLASSBIN% . > ../%JAROUT% 2> ../%JARERR%
 
 ECHO "3. Creating Javadoc ..............."
 cd ..
-javadoc -cp ".;%BINDIR%;../%LIBDIR%/*" --module-path "%LIBDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
+javadoc -cp ".;%BINDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
 
 cd bin
 ECHO "4. Running Jar ...................."

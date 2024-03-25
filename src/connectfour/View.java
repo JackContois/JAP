@@ -922,8 +922,7 @@ public class View extends JFrame {
 		this.rules = currentPhrases.getOrDefault("rules",
 				"Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
 
-		String close = currentPhrases.getOrDefault("close", "Close");
-		closeButton.setText(close);
+		this.close = currentPhrases.getOrDefault("close", "Close");
 	}
 
 	/**

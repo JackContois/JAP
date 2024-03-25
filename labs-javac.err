@@ -1,8 +1,7 @@
-warning: [path] Invalid filename: lib/*
 src\connectfour\View.java:17: warning: [serial] serializable class View has no definition of serialVersionUID
 public class View extends JFrame {
        ^
 src\connectfour\TimeKeeper.java:8: warning: [serial] serializable class TimeKeeper has no definition of serialVersionUID
 public class TimeKeeper extends JLabel {
        ^
-3 warnings
+2 warnings
