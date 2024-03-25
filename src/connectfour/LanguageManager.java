@@ -2,14 +2,27 @@ package connectfour;
 
 import java.util.HashMap;
 
+/**
+ * The LanguageManager class manages the language localization for the Connect Four game.
+ * It provides methods to retrieve phrases and labels in different languages.
+ */
 public class LanguageManager {
+	
+	/** A map containing language data organized by language and phrase categories. */
     private HashMap<String, HashMap<String, HashMap<String, String>>> languages;
 
+    /**
+     * Constructs a new LanguageManager object and initializes the language data.
+     */
     public LanguageManager() {
         languages = new HashMap<>();
         initializeLanguages();
     }
 
+    /**
+     * Initializes the language data for English and French.
+     * Each language contains mappings for different phrase categories.
+     */
     private void initializeLanguages() {
         // English language
         HashMap<String, HashMap<String, String>> english = new HashMap<>();
@@ -67,6 +80,11 @@ public class LanguageManager {
         languages.put("French", french);
     }
 
+    /**
+     * Retrieves the phrases for a specific language.
+     * @param language The language for which to retrieve phrases (e.g., "English", "French").
+     * @return A map containing the phrases for the specified language.
+     */
     public HashMap<String, String> getPhrases(String language) {
         HashMap<String, HashMap<String, String>> languageMap = languages.getOrDefault(language, new HashMap<>());
         return languageMap.getOrDefault("phrases", new HashMap<>());

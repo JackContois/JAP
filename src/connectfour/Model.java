@@ -1,15 +1,32 @@
 package connectfour;
 
+/**
+ * The Model class represents the game logic and data in the Connect Four game.
+ * It manages the game board, player turns, moves, and win conditions.
+ */
 public class Model {
+	/** The number of rows on the game board. */
     private static final int NUM_ROWS = 6;
+
+    /** The number of columns on the game board. */
     private static final int NUM_COLS = 7;
+
+    /** The current player (1 or 2) making the move. */
     private int player = 1;
+
+    /** The 2D array representing the game board. */
     private int[][] board;
 
+    /**
+     * Constructs a new Model object and initializes the game board.
+     */
     public Model() {
         initializeBoard();
     }
 
+    /**
+     * Initializes the game board, setting all cells to empty.
+     */
     private void initializeBoard() {
         board = new int[NUM_ROWS][NUM_COLS];
         // Initialize all cells to empty
@@ -20,6 +37,12 @@ public class Model {
         }
     }
 
+    /**
+     * Attempts to make a move in the specified column for the current player.
+     * Finds the bottom empty cell in the column and updates the board.
+     * @param column The column in which to make the move.
+     * @return The row where the move was made, or -1 if the column is full.
+     */
     public int makeMove(int column) {
         // Find the bottom empty cell in the specified column
         for (int row = NUM_ROWS - 1; row >= 0; row--) {
@@ -32,15 +55,29 @@ public class Model {
         return -1; // Column is full, move failed
     }
 
+    /**
+     * Gets the value of the cell at the specified column and row on the board.
+     * @param col The column index.
+     * @param row The row index.
+     * @return The value of the cell at the specified column and row.
+     */
     public int getBoardValue(int col, int row) {
 		return board[row][col]; 
     }
     
+    /**
+     * Resets the game by initializing the board and setting the current player to 1.
+     */
     public void resetGame() {
     	initializeBoard();
     	this.player = 1;
     }
     
+    /**
+     * Checks for a winner by scanning the board for four consecutive chips in a row,
+     * column, or diagonal.
+     * @return 0 if no winner yet, 1 or 2 if a player wins, -1 for a draw.
+     */
     public int checkWinner() {
     	
     	boolean isBoardFull = true;
@@ -98,6 +135,10 @@ public class Model {
         return 0; // No winner yet
     }
     
+    /**
+     * Gets the current player making the move.
+     * @return The current player (1 or 2).
+     */
     protected int getCurrentPlayer() {
     	return player;
     }

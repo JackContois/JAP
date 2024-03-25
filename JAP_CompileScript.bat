@@ -23,7 +23,7 @@ SET JARNAME=A22connect4.jar
 SET JAROUT=labs-jar.out
 SET JARERR=labs-jar.err
 SET DOCDIR=doc
-SET DOCPACK=A22
+SET DOCPACK=connectfour
 SET DOCERR=labs-javadoc.err
 SET MAINCLASSSRC=src/connectfour/Main.java
 SET MAINCLASSBIN=Main
@@ -64,7 +64,6 @@ jar cvvvfe %JARNAME% %MAINCLASSBIN% . > ../%JAROUT% 2> ../%JARERR%
 
 ECHO "3. Creating Javadoc ..............."
 cd ..
-ECHO javadoc -cp ".;%BINDIR%;../%LIBDIR%/*" --module-path "%LIBDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
 javadoc -cp ".;%BINDIR%;../%LIBDIR%/*" --module-path "%LIBDIR%" -d %DOCDIR% -sourcepath %SRCDIR% -subpackages %DOCPACK% 2> %DOCERR%
 
 cd bin

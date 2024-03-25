@@ -9,82 +9,344 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * The View class represents the graphical user interface of the Connect Four game.
+ * It displays the game board, player information, timers, chat functionality, and menu options.
+ * Handles user interactions and updates the GUI accordingly.
+ */
 public class View extends JFrame {
+	/**
+	 * The size of each cell in the game board grid.
+	 */
 	private static final int CELL_SIZE = 80;
+
+	/**
+	 * The number of rows in the game board.
+	 */
 	private static final int NUM_ROWS = 6;
+
+	/**
+	 * The number of columns in the game board.
+	 */
 	private static final int NUM_COLS = 7;
+
+	/**
+	 * The number of red chips played in the game.
+	 */
 	private int redChipsPlayed;
+
+	/**
+	 * The number of black chips played in the game.
+	 */
 	private int blackChipsPlayed;
-	private static final Color GAME_STATUS_SECTION_COLOR = new Color(209,209,209);
+
+	/**
+	 * The color used for the game status section of the GUI.
+	 */
+	private static final Color GAME_STATUS_SECTION_COLOR = new Color(209, 209, 209);
+
+	/**
+	 * Indicates the current option in the game.
+	 */
 	int option = 0;
+
+	/**
+	 * Timer object for real-time updates during the game.
+	 */
 	protected Timer realTime;
+
+	/**
+	 * The main panel of the GUI.
+	 */
 	private JPanel mainPanel;
+
+	/**
+	 * Panel containing the game board.
+	 */
 	private JPanel boardPanel;
+
+	/**
+	 * Panel containing the player controls and buttons.
+	 */
 	private JPanel playPanel;
+
+	/**
+	 * Panel containing the game log.
+	 */
 	private JPanel gameLog;
+
+	/**
+	 * Panel containing the title label.
+	 */
 	private JPanel titlePanel;
+
+	/**
+	 * Label displaying the title of the game.
+	 */
 	private JLabel title;
+
+	/**
+	 * Label displaying the active player's turn.
+	 */
 	private JLabel activePlayerLabel;
+
+	/**
+	 * Label displaying the number of red chips played.
+	 */
 	private JLabel redPlayerChipsLabel;
+
+	/**
+	 * Label displaying the number of black chips played.
+	 */
 	private JLabel blackPlayerChipsLabel;
+
+	/**
+	 * Label displaying whose turn it is.
+	 */
 	private JLabel playerTurnLabel;
+
+	/**
+	 * Label displaying the game timer.
+	 */
 	private JLabel gameTimerLabel;
+
+	/**
+	 * Label displaying the turn timer.
+	 */
 	private JLabel turnTimerLabel;
+
+	/**
+	 * Object to manage the game timer.
+	 */
 	private TimeKeeper gameTimerText;
+
+	/**
+	 * Object to manage the turn timer.
+	 */
 	private TimeKeeper turnTimerText;
+
+	/**
+	 * Label indicating the number of chips played.
+	 */
 	private JLabel chipsPlayedLabel;
+
+	/**
+	 * Panel containing various information about the game status.
+	 */
 	private JPanel infoPanel;
+
+	/**
+	 * Panel containing the game status indicators.
+	 */
 	private JPanel gameStatusPanel;
+
+	/**
+	 * Panel containing the top part of the game status panel.
+	 */
 	private JPanel topGSPanel;
+
+	/**
+	 * Panel containing the turn indicator.
+	 */
 	private JPanel turnPanel;
+
+	/**
+	 * Panel containing the timer indicators.
+	 */
 	private JPanel timersPanel;
+
+	/**
+	 * Panel containing the chips played indicator.
+	 */
 	private JPanel chipsPlayedPanel;
+
+	/**
+	 * Panel containing the top part of the chips played panel.
+	 */
 	private JPanel topCPPanel;
+
+	/**
+	 * Panel containing the bottom part of the chips played panel.
+	 */
 	private JPanel bottomCPPanel;
+
+	/**
+	 * Text area for displaying game instructions.
+	 */
 	private JTextArea instructionsTextArea;
+
+	/**
+	 * Text field for entering chat messages.
+	 */
 	private JTextField messageField;
+
+	/**
+	 * Button for sending chat messages.
+	 */
 	private JButton sendButton;
+
+	/**
+	 * Button for closing dialogs.
+	 */
 	private JButton closeButton;
+
+	/**
+	 * Array of buttons representing each column in the game board.
+	 */
 	protected JButton[] columnButtons;
+
+	/**
+	 * Image for the red chip.
+	 */
 	private BufferedImage redChipImage;
+
+	/**
+	 * Image for the black chip.
+	 */
 	private BufferedImage blackChipImage;
+
+	/**
+	 * Image for an empty cell in the game board.
+	 */
 	private BufferedImage emptyCellImage;
+
+	/**
+	 * Icon for the red player.
+	 */
 	private ImageIcon redPlayerImage;
+
+	/**
+	 * Icon for the black player.
+	 */
 	private ImageIcon blackPlayerImage;
+
+	/**
+	 * 2D array representing the game board.
+	 */
 	private int[][] board;
+
+	/**
+	 * The controller responsible for handling user inputs.
+	 */
 	private Controller controller;
+
+	/**
+	 * The model containing the game logic.
+	 */
 	private Model model;
-	private JMenu g, n, l, h, c;
-	private JMenuItem g1, g2, l1, h1, l2;
+
+	/**
+	 * Menu for game-related actions.
+	 */
+	private JMenu g;
+
+	/**
+	 * Menu for network-related actions.
+	 */
+	private JMenu n;
+
+	/**
+	 * Menu for language-related actions.
+	 */
+	private JMenu l;
+
+	/**
+	 * Menu for help-related actions.
+	 */
+	private JMenu h;
+
+	/**
+	 * Menu item for restarting the game.
+	 */
+	private JMenuItem g1;
+
+	/**
+	 * Menu item for quitting the game.
+	 */
+	private JMenuItem g2;
+
+	/**
+	 * Menu item for changing the language to English.
+	 */
+	private JMenuItem l1;
+
+	/**
+	 * Menu item for opening the "How To Play" dialog.
+	 */
+	private JMenuItem h1;
+
+	/**
+	 * Menu item for changing the language to French.
+	 */
+	private JMenuItem l2;
+
+	/**
+	 * Manager for handling language localization.
+	 */
 	private LanguageManager languageManager;
+
+	/**
+	 * Map containing the current set of localized phrases.
+	 */
 	private HashMap<String, String> currentPhrases;
+
+	/**
+	 * Text area for the game log
+	 */
 	private JTextArea gameLogTextArea;
+	
+	/**
+	 * The selected language for the GUI.
+	 */
 	String newLanguage = "French";
-	String gameMenu;
-	String networkMenu;
-	String helpMenu;
-	String languageMenu;
-	String restartMenu;
-	String quitMenu;
-	String cLanguageMenu;
-	String cLanguageMenu2;
-	String HTPMenu;
+
+	/**
+	 * Message displayed when player 1 wins.
+	 */
 	String player1Wins;
+
+	/**
+	 * Message displayed when player 2 wins.
+	 */
 	String player2Wins;
-	String chipsPlayed;
-	String playerTurn;
-	String timer;
-	String turnTimer;
-	String player1Plays;
-	String player2Plays;
-	String send;
-	String drawMessage;
-	String rules;
+
+	/**
+	 * Message displayed for closing dialogs.
+	 */
 	String close;
 
+	/**
+	 * Rules of the game.
+	 */
+	String rules;
 
+	/**
+	 * Message displayed when player 1 makes a move.
+	 */
+	String player1Plays;
+
+	/**
+	 * Message displayed when player 2 makes a move.
+	 */
+	String player2Plays;
+
+	/**
+	 * Menu item label for opening the "How To Play" dialog.
+	 */
+	String HTPMenu;
+
+	/**
+	 * Message displayed when the game ends in a draw.
+	 */
+	String drawMessage;
+
+	
+	/**
+     * Constructs a View object associated with the specified model.
+     * @param model The Model object representing the game's logic.
+     */
 	public View(Model model) {
-		SwingUtilities.invokeLater(()->{
+		SwingUtilities.invokeLater(() -> {
 			this.model = model;
 			Controller controller = new Controller(model, this);
 			setController(controller);
@@ -109,14 +371,13 @@ public class View extends JFrame {
 			// create info panel
 			infoPanel = new JPanel(new BorderLayout());
 
-
 			// create game status panel
 			redPlayerImage = new ImageIcon(getClass().getResource("/resources/redPlayerV1.png"));
 			blackPlayerImage = new ImageIcon(getClass().getResource("/resources/blackPlayerV1.png"));
 			gameStatusPanel = new JPanel(new BorderLayout());
-			topGSPanel = new JPanel(new GridLayout(1,2));
+			topGSPanel = new JPanel(new GridLayout(1, 2));
 			turnPanel = new JPanel(new BorderLayout());
-			timersPanel = new JPanel(new GridLayout(2,2));
+			timersPanel = new JPanel(new GridLayout(2, 2));
 			chipsPlayedPanel = new JPanel(new BorderLayout());
 			topCPPanel = new JPanel();
 			bottomCPPanel = new JPanel();
@@ -125,7 +386,7 @@ public class View extends JFrame {
 			turnPanel.setBackground(GAME_STATUS_SECTION_COLOR);
 			turnPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 			activePlayerLabel = new JLabel(redPlayerImage);
-			playerTurnLabel = new JLabel ();
+			playerTurnLabel = new JLabel();
 			playerTurnLabel.setFont(new Font("Serif", Font.PLAIN, 25));
 			turnPanel.add(playerTurnLabel, BorderLayout.NORTH);
 			turnPanel.add(activePlayerLabel, BorderLayout.CENTER);
@@ -148,9 +409,8 @@ public class View extends JFrame {
 			timersPanel.add(turnTimerLabel);
 			timersPanel.add(turnTimerText);
 
-
 			// setup top GS panel
-			topGSPanel.setPreferredSize(new Dimension(0,100));
+			topGSPanel.setPreferredSize(new Dimension(0, 100));
 			topGSPanel.add(turnPanel);
 			topGSPanel.add(timersPanel);
 
@@ -169,30 +429,24 @@ public class View extends JFrame {
 			redPlayerChipsLabel.setText(": " + redChipsPlayed);
 			blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
 
-
 			// setup chips played panel
 			chipsPlayedPanel.setBackground(GAME_STATUS_SECTION_COLOR);
 			chipsPlayedPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-			chipsPlayedPanel.setPreferredSize(new Dimension(0,100));
+			chipsPlayedPanel.setPreferredSize(new Dimension(0, 100));
 			chipsPlayedPanel.add(topCPPanel, BorderLayout.NORTH);
 			chipsPlayedPanel.add(bottomCPPanel, BorderLayout.SOUTH);
 			redChipsPlayed = 0;
 			blackChipsPlayed = 0;
 
-
-
 			// setup game status panel
-			gameStatusPanel.setPreferredSize(new Dimension(0,200));
+			gameStatusPanel.setPreferredSize(new Dimension(0, 200));
 			gameStatusPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 			gameStatusPanel.add(topGSPanel, BorderLayout.NORTH);
 			gameStatusPanel.add(chipsPlayedPanel, BorderLayout.SOUTH);
 
-
-
 			// setup info panel
-			infoPanel.setPreferredSize(new Dimension(425,0));
+			infoPanel.setPreferredSize(new Dimension(425, 0));
 			infoPanel.add(gameStatusPanel, BorderLayout.NORTH);
-
 
 			mainPanel.add(infoPanel, BorderLayout.EAST);
 
@@ -215,7 +469,7 @@ public class View extends JFrame {
 						for (int col = 0; col < NUM_COLS; col++) {
 							int x = col * CELL_SIZE;
 							int y = row * CELL_SIZE;
-							int value = model.getBoardValue(col,row);
+							int value = model.getBoardValue(col, row);
 							if (value == 0) {
 								g.drawImage(emptyCellImage, x, y, CELL_SIZE, CELL_SIZE, null);
 							} else if (value == 1) {
@@ -255,7 +509,6 @@ public class View extends JFrame {
 			// Add input panel to the bottom of the main panel
 			infoPanel.add(inputPanel, BorderLayout.SOUTH);
 
-
 			// Add buttons
 			addButtons();
 
@@ -270,51 +523,72 @@ public class View extends JFrame {
 
 	}
 
-	// function to update the game timer
+	/**
+     * Updates the game timer display.
+     */
 	public void updateGameTimer() {
 		gameTimerText.updateTimer();
 	}
-	// function to update the turn timer
+
+	/**
+     * Updates the turn timer display.
+     */
 	public void updateTurnTimer() {
 		turnTimerText.updateTimer();
 	}
 
-	// function to reset the game timer
+	/**
+     * Resets the game timer.
+     */
 	public void resetGameTimer() {
 		gameTimerText.resetTimer();
 
 	}
 
-	// function to reset the turn timer
+	/**
+     * Resets the turn timer.
+     */
 	public void resetTurnTimer() {
 		turnTimerText.resetTimer();
 
 	}
-	
-	// function to create and start the timer thread
+
+	/**
+     * Creates and starts the timer thread.
+     */
 	protected void createTimerThread() {
-		SwingUtilities.invokeLater(()->{
+		SwingUtilities.invokeLater(() -> {
 			realTime = new Timer(1000, controller);
 			realTime.setActionCommand("updateTimer");
 			startTimerThread();
 		});
 
 	}
-	
+
+	/**
+     * Starts the timer thread.
+     */
 	protected void startTimerThread() {
-		SwingUtilities.invokeLater(() ->{
+		SwingUtilities.invokeLater(() -> {
 			realTime.start();
 		});
-		
-	}
-	
-	protected void stopTimerThread() {
-		SwingUtilities.invokeLater(() ->{
-			realTime.stop();
-		});
-		
+
 	}
 
+	/**
+     * Stops the timer thread.
+     */
+	protected void stopTimerThread() {
+		SwingUtilities.invokeLater(() -> {
+			realTime.stop();
+		});
+
+	}
+
+	/**
+	 * Loads images for the red and black chips, as well as for empty cells, from the resources folder.
+	 * Displays an error message if any image fails to load.
+	 */
 	private void loadImages() {
 		try {
 			redChipImage = ImageIO.read(getClass().getResource("/resources/red.png"));
@@ -326,8 +600,13 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * Adds buttons to the GUI for each column in the game board.
+	 * Sets up button icons and action listeners.
+	 * Displays an error message if the arrow image fails to load.
+	 */
 	private void addButtons() {
-		
+
 		// Create button panel for the buttons
 		JPanel buttonPanel = new JPanel(new GridLayout(1, NUM_COLS));
 		columnButtons = new JButton[NUM_COLS];
@@ -352,31 +631,37 @@ public class View extends JFrame {
 		playPanel.add(buttonPanel, BorderLayout.NORTH);
 	}
 
+	/**
+	 * Checks the value of a cell in the game board and updates the GUI accordingly.
+	 * Updates player information, game log, and handles end-game scenarios.
+	 * @param col The column of the cell to check.
+	 * @param row The row of the cell to check.
+	 * @return 1 if the game is over, 0 otherwise.
+	 */
 	public int checkValue(int col, int row) {
 		board[row][col] = model.getBoardValue(col, row);
 		boardPanel.repaint();
 		int winner = model.checkWinner();
-			int player = model.getCurrentPlayer();
-			if (player == 1) {
-				String playerMoveMessage = player2Plays + col + "\n";
-				appendToGameLog(playerMoveMessage);
-				if (winner == 0) {
-					activePlayerLabel.setIcon(redPlayerImage);
-				}
-				blackChipsPlayed++; 
-			} else {
-				String playerMoveMessage = player1Plays + col + "\n";
-				appendToGameLog(playerMoveMessage);
-				redChipsPlayed++;
-				if (winner == 0) {
-					activePlayerLabel.setIcon(blackPlayerImage);
-				}
+		int player = model.getCurrentPlayer();
+		if (player == 1) {
+			String playerMoveMessage = player2Plays + col + "\n";
+			appendToGameLog(playerMoveMessage);
+			if (winner == 0) {
+				activePlayerLabel.setIcon(redPlayerImage);
+			}
+			blackChipsPlayed++;
+		} else {
+			String playerMoveMessage = player1Plays + col + "\n";
+			appendToGameLog(playerMoveMessage);
+			redChipsPlayed++;
+			if (winner == 0) {
+				activePlayerLabel.setIcon(blackPlayerImage);
+			}
 		}
 
 		redPlayerChipsLabel.setText(": " + redChipsPlayed);
 		blackPlayerChipsLabel.setText(": " + blackChipsPlayed);
 
-		
 		if (winner != 0 & winner != -1) {
 			realTime.stop();
 			String message = (winner == 1) ? player1Wins : player2Wins;
@@ -439,19 +724,36 @@ public class View extends JFrame {
 		return 0;
 	}
 
+	/**
+	 * Appends a message to the game log text area.
+	 * Automatically scrolls to the bottom of the log.
+	 * @param message The message to append.
+	 */
 	private void appendToGameLog(String message) {
 		gameLogTextArea.append(message);
 		gameLogTextArea.setCaretPosition(gameLogTextArea.getDocument().getLength());
 	}
 
+	/**
+	 * Sets the controller responsible for handling user inputs.
+	 * @param controller The controller object.
+	 */
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
 
+	/**
+	 * Sets the model associated with this view.
+	 * @param model The model object.
+	 */
 	public void setModel(Model model) {
 		this.model = model;
 	}
 
+	/**
+	 * Initializes the game board with empty cells.
+	 * Called when starting a new game.
+	 */
 	private void initializeBoard() {
 		board = new int[NUM_ROWS][NUM_COLS];
 		for (int row = 0; row < NUM_ROWS; row++) {
@@ -461,6 +763,10 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * Resets the game state, including the game board, game log, and player information.
+	 * Called when starting a new game.
+	 */
 	protected void resetGame() {
 		deleteDialog();
 		model.resetGame();
@@ -475,7 +781,10 @@ public class View extends JFrame {
 		activePlayerLabel.setIcon(redPlayerImage);
 	}
 
-
+	/**
+	 * Initializes the menu bar with game options and actions.
+	 * Sets up action listeners for menu items.
+	 */
 	private void initializeMenu() {
 		// Create menu bar
 		JMenuBar menuBar = new JMenuBar();
@@ -509,13 +818,12 @@ public class View extends JFrame {
 		// Set the menu bar to the frame
 		setJMenuBar(menuBar);
 
-		//Set up actions
+		// Set up actions
 		g1.addActionListener(controller);
 		g1.setActionCommand("restart");
 
 		g2.addActionListener(controller);
 		g2.setActionCommand("quit");
-
 
 		l1.addActionListener(controller);
 		l1.setActionCommand("changeLanguageEnglish");
@@ -527,6 +835,11 @@ public class View extends JFrame {
 		h1.setActionCommand("howToPlay");
 	}
 
+	/**
+	 * Sets the language of the GUI components based on the specified language.
+	 * Updates text labels and menu items accordingly.
+	 * @param language The language code (e.g., English or French).
+	 */
 	protected void setLanguage(String language) {
 		// Toggle between English and French
 		currentPhrases = languageManager.getPhrases(language);
@@ -535,6 +848,10 @@ public class View extends JFrame {
 		updateLabels();
 	}
 
+	/**
+	 * Closes all open dialogs currently displayed on the screen.
+	 * Used to clean up dialogs after they are no longer needed.
+	 */
 	protected void deleteDialog() {
 		Window[] windows = Window.getWindows();
 		for (Window window : windows) {
@@ -547,30 +864,33 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * Updates the text labels of GUI components with the current language settings.
+	 * Used when changing the language to update all displayed text accordingly.
+	 */
 	private void updateLabels() {
-		gameMenu = currentPhrases.getOrDefault("gameLabel", "Game");
+		String gameMenu = currentPhrases.getOrDefault("gameLabel", "Game");
 		g.setText(gameMenu);
 
-
-		networkMenu = currentPhrases.getOrDefault("networkLabel", "Network");
+		String networkMenu = currentPhrases.getOrDefault("networkLabel", "Network");
 		n.setText(networkMenu);
 
-		languageMenu = currentPhrases.getOrDefault("languageLabel", "Language");
+		String languageMenu = currentPhrases.getOrDefault("languageLabel", "Language");
 		l.setText(languageMenu);
 
-		helpMenu = currentPhrases.getOrDefault("helpLabel", "Help");
+		String helpMenu = currentPhrases.getOrDefault("helpLabel", "Help");
 		h.setText(helpMenu);
 
-		restartMenu = currentPhrases.getOrDefault("restartLabel", "Restart Game");
+		String restartMenu = currentPhrases.getOrDefault("restartLabel", "Restart Game");
 		g1.setText(restartMenu);
 
-		quitMenu = currentPhrases.getOrDefault("quitLabel", "Quit Game");
+		String quitMenu = currentPhrases.getOrDefault("quitLabel", "Quit Game");
 		g2.setText(quitMenu);
 
-		cLanguageMenu = currentPhrases.getOrDefault("cLanguageLabelEnglish", "English");
+		String cLanguageMenu = currentPhrases.getOrDefault("cLanguageLabelEnglish", "English");
 		l1.setText(cLanguageMenu);
 
-		cLanguageMenu2 = currentPhrases.getOrDefault("cLanguageLabelFrench", "French");
+		String cLanguageMenu2 = currentPhrases.getOrDefault("cLanguageLabelFrench", "French");
 		l2.setText(cLanguageMenu2);
 
 		HTPMenu = currentPhrases.getOrDefault("HTPLabel", "How To Play");
@@ -579,53 +899,70 @@ public class View extends JFrame {
 		this.player1Wins = currentPhrases.getOrDefault("P1Wins", "Player 1 Wins");
 		this.player2Wins = currentPhrases.getOrDefault("P2Wins", "Player 2 Wins");
 
-		chipsPlayed = currentPhrases.getOrDefault("chipsPlayed", "Chips Played");
+		String chipsPlayed = currentPhrases.getOrDefault("chipsPlayed", "Chips Played");
 		chipsPlayedLabel.setText(chipsPlayed);
 
-		playerTurn = currentPhrases.getOrDefault("playerTurn", "Player's Turn");
+		String playerTurn = currentPhrases.getOrDefault("playerTurn", "Player's Turn");
 		playerTurnLabel.setText(playerTurn);
 
-		timer = currentPhrases.getOrDefault("timer", "Timer");
-		gameTimerLabel.setText(timer+ ": ");
+		String timer = currentPhrases.getOrDefault("timer", "Timer");
+		gameTimerLabel.setText(timer + ": ");
 
-		turnTimer = currentPhrases.getOrDefault("turnTimer", "Turn Timer");
+		String turnTimer = currentPhrases.getOrDefault("turnTimer", "Turn Timer");
 		turnTimerLabel.setText(turnTimer + ": ");
 
 		this.player1Plays = currentPhrases.getOrDefault("player1Plays", "Player 1 Plays in Column: ");
 		this.player2Plays = currentPhrases.getOrDefault("player2Plays", "Player 2 Plays in Column: ");
 
-		send = currentPhrases.getOrDefault("send", "Send");
+		String send = currentPhrases.getOrDefault("send", "Send");
 		sendButton.setText(send);
 
 		this.drawMessage = currentPhrases.getOrDefault("draw", "Draw");
 
-		this.rules = currentPhrases.getOrDefault("rules", "Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
-		
-		close = currentPhrases.getOrDefault("close", "Close");
+		this.rules = currentPhrases.getOrDefault("rules",
+				"Instructions:\n1. Each player takes turns dropping a chip into one of the columns.\n2. The chip falls to the lowest empty slot in the selected column.\n3. The first player to connect four chips in a row wins.\n4. The connection can be horizontal, vertical, or diagonal.");
+
+		String close = currentPhrases.getOrDefault("close", "Close");
 		closeButton.setText(close);
 	}
 
+	/**
+	 * Appends a message to the chat area.
+	 */
 	protected void sendMessage() {
 		String message = messageField.getText();
 		appendToGameLog(message + "\n");
 		messageField.setText("");
 	}
+
+	/**
+	 * Sets the column buttons as enabled.
+	 * @param enabled Pass in that we want the buttons enabled
+	 */
 	private void setColumnButtonsEnabled(boolean enabled) {
 		for (JButton button : columnButtons) {
 			button.setEnabled(enabled);
 		}
 	}
 
-	// After a winner is determined or when the game ends
+	/**
+	 * Disables buttons to place pieces.
+	 */
 	protected void disableColumnButtons() {
 		setColumnButtonsEnabled(false);
 	}
 
-	// When the game is reset
+	/**
+	 * Enables the buttons to place pieces for use.
+	 */
 	protected void enableColumnButtons() {
 		setColumnButtonsEnabled(true);
 	}
 
+	/**
+	 * Displays the "How To Play" dialog with instructions for playing the game.
+	 * Includes rules and gameplay instructions.
+	 */
 	protected void showHowToPlayDialog() {
 		// Create a new dialog
 		JDialog howToPlayDialog = new JDialog(this, HTPMenu, true);
@@ -636,7 +973,7 @@ public class View extends JFrame {
 		String message = rules;
 		// Add instructions text
 		instructionsTextArea = new JTextArea(message);
-		instructionsTextArea.setEditable(false); 
+		instructionsTextArea.setEditable(false);
 		howToPlayDialog.add(instructionsTextArea, BorderLayout.CENTER);
 
 		// Add a close button
