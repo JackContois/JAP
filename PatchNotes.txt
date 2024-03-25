@@ -2,3 +2,7 @@ Patch Notes 2024-02-18:
 Simplified the UI and made the game title appear above the entire area. Simplified the Game status screen to have designated areas and simplified the shapes and animations.
 
 Patch Notes 2024-03-24:
+Added an updated UML diagram.
+The updated Diagram follows the same MVC design, with the addition
+of smaller helper classes and updated relationship arrows.
+The updated UML reflects the fully completed content of the model, view, and controller.
