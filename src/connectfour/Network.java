@@ -10,6 +10,10 @@ public class Network {
     private Controller controller;
     private final String HOSTNAME = "127.0.0.1";
     private final int PORT = 6868;
+    
+    public Network(Controller controller) {
+        this.controller = controller;
+    }
 
     public void sendMessageToServer(String message) {
         try (Socket socket = new Socket(HOSTNAME, PORT)) {
