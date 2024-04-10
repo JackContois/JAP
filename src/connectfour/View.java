@@ -619,9 +619,7 @@ public class View extends JFrame {
 				ImageIcon icon = new ImageIcon(img.getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 				JButton button = new JButton(icon);
 				int finalCol = col;
-				button.setActionCommand("makeMove");
-				button.putClientProperty("column", finalCol);
-				button.addActionListener(controller);
+				button.addActionListener(e -> controller.makeMove(finalCol));
 				buttonPanel.add(button);
 				columnButtons[col] = button;
 			}

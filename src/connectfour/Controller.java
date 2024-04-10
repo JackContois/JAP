@@ -33,6 +33,16 @@ public class Controller implements ActionListener{
         this.model = model;
         this.view = view;
     }
+    
+    public void makeMove(int column) {
+    	int row = model.makeMove(column);
+        if (row != -1) {
+            int winner = view.checkValue(column, row);
+            if(winner==0) {
+                view.resetTurnTimer();
+            }
+        }
+    }
 
     /**
      * Handles action events triggered by user interactions.
@@ -58,17 +68,6 @@ public class Controller implements ActionListener{
                 break;
             case "changeLanguageFrench":
                 view.setLanguage("French");
-                break;
-            case "makeMove":
-                JButton button = (JButton) e.getSource();
-                int column = getColumnFromButton(button);
-                int row = model.makeMove(column);
-                if (row != -1) {
-                    int winner = view.checkValue(column, row);
-                    if(winner==0) {
-                        view.resetTurnTimer();
-                    }
-                }
                 break;
             case "updateTimer":
                 view.updateGameTimer();
