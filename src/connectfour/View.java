@@ -279,6 +279,9 @@ public class View extends JFrame {
 	 * Menu item for changing the language to French.
 	 */
 	private JMenuItem l2;
+	
+	private JMenuItem n1;
+	private JMenuItem n2;
 
 	/**
 	 * Manager for handling language localization.
@@ -801,6 +804,8 @@ public class View extends JFrame {
 		l1 = new JMenuItem();
 		l2 = new JMenuItem();
 		h1 = new JMenuItem();
+		n1 = new JMenuItem("Host Game");
+		n2 = new JMenuItem("Join Game");
 
 		// Add menu items to menus
 		g.add(g1);
@@ -808,6 +813,8 @@ public class View extends JFrame {
 		l.add(l1);
 		l.add(l2);
 		h.add(h1);
+		n.add(n1);
+		n.add(n2);
 
 		// Add menus to menu bar
 		menuBar.add(g);
@@ -833,6 +840,12 @@ public class View extends JFrame {
 
 		h1.addActionListener(controller);
 		h1.setActionCommand("howToPlay");
+		
+		n1.addActionListener(controller);
+		n1.setActionCommand("hostGame");
+		
+		n2.addActionListener(controller);
+		n2.setActionCommand("joinGame");
 	}
 
 	/**

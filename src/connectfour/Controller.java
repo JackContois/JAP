@@ -2,8 +2,14 @@ package connectfour;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
 
 /**
  * The Controller class handles user interactions and updates the model and view accordingly.
@@ -77,6 +83,17 @@ public class Controller implements ActionListener{
             case "deleteDialog":
                 view.deleteDialog();
                 break;
+            case "hostGame":
+            	 try {
+                     Thread server = new Thread(new Server());
+                     server.start();
+                 } catch (IOException ex) {
+                     ex.printStackTrace();
+                 }
+            	break;
+            case "joinGame":
+                Thread client = new Thread(new Client());
+                client.start();
         }
     }
     
