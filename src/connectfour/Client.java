@@ -10,15 +10,19 @@ public class Client implements Runnable {
     private final String HOSTNAME = "127.0.0.1";
     private final int PORT = 6868;
     private Network network;
+    private Controller controller;
 
-    public Client(Network network) {
+    public Client(Network network, Controller controller) {
         this.network = network;
+        this.controller = controller;
     }
 
     @Override
     public void run() {
         try (Socket socket = new Socket(HOSTNAME, PORT)) {
-            network.handleMessage(socket);
+        	controller.setThisPlayer(2);
+        	network.setSocket(socket);
+            network.handleMessage();
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {

@@ -12,41 +12,37 @@ public class Network {
     private Controller controller;
     private final String HOSTNAME = "127.0.0.1";
     private final int PORT = 6868;
-    private Queue<String> messageQueue = new LinkedList<>();
+    private Socket socket;
     
     public Network(Controller controller) {
         this.controller = controller;
     }
+    
+    public void setSocket(Socket socket) {
+    	this.socket = socket;
+    }
 
     // Method to send a message to either server or client
-    public void sendMessage(Socket socket, String message) {
+    public void sendMessage(String message) {
+    	System.out.println("Sending!");
+    	System.out.println("Sent message: " + message);
         try {
             OutputStream output = socket.getOutputStream();
+            System.out.println("1");
             PrintWriter writer = new PrintWriter(output, true);
+            System.out.println("2");
             writer.println(message);
-            System.out.println("Sent message: " + message);
+            System.out.println("3");
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
-            System.out.println("I/O error: " + ex.getMessage());
+            System.out.println("I/O error2: " + ex.getMessage());
         }
     }
 
-    // Method to enqueue a message to be sent
-    public void enqueueMessage(String message) {
-        messageQueue.offer(message);
-    }
 
-    // Method to send queued messages
-    public void sendQueuedMessages(Socket socket) {
-        while (!messageQueue.isEmpty()) {
-            String message = messageQueue.poll();
-            sendMessage(socket, message);
-        }
-    }
-
-    public void handleMessage(Socket clientSocket) {
-        try (BufferedReader read = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+    public void handleMessage() {
+        try (BufferedReader read = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
         	System.out.println("Recieved");
             String command;
             while ((command = read.readLine()) != null) {
@@ -60,7 +56,7 @@ public class Network {
                         int player = Integer.parseInt(moveInfo[1].trim());
                         
                         // call methods to update board based on move
-                        controller.makeMove(columnIndex);
+                        controller.recievedMove(columnIndex);
                     }
                 }
                 /* Handle chat messages */

@@ -20,19 +20,25 @@ public class Server implements Runnable {
             System.out.println("Server started on localhost. Waiting for clients...");
 
             while (true) {
+            	System.out.println("top");
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("after");
                 System.out.println("Client connected: " + clientSocket.getInetAddress());
-
+                
+                network.setSocket(clientSocket);
+                
                 // Send a message to the client
-                network.sendMessage(clientSocket, "Connection successful");
+                network.sendMessage("Connection successful");
+                
 
                 // Pass the socket to handleMessage method
-                new Thread(() -> network.handleMessage(clientSocket)).start();
+                new Thread(() -> network.handleMessage()).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
+            	System.out.println("closing");
                 serverSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
