@@ -10,8 +10,9 @@ public class Server implements Runnable {
     private final int PORT = 6868;
     private Network network;
 
-    public Server() throws IOException {
+    public Server(Network network) throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+        this.network = network;
     }
 
 

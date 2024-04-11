@@ -6,3 +6,5 @@ Added an updated UML diagram.
 The updated Diagram follows the same MVC design, with the addition
 of smaller helper classes and updated relationship arrows.
 The updated UML reflects the fully completed content of the model, view, and controller.
+
+Note: We couldn't tell based on the instructions if the splash screen was to be added for this assignment or the next, so we decided to omit the splash screen.

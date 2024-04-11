@@ -84,7 +84,8 @@ public class Controller implements ActionListener{
                 break;
             case "hostGame":
             	 try {
-                     Thread server = new Thread(new Server());
+            		 Network network = new Network(this);
+                     Thread server = new Thread(new Server(network));
                      server.start();
                  } catch (IOException ex) {
                      ex.printStackTrace();

@@ -15,6 +15,7 @@ public class Main {
             View view = new View(model);
             Controller controller = new Controller(model, view);
             Network network = new Network(controller);
+            
             view.setController(controller);
             view.setModel(model);
             view.setVisible(true);
