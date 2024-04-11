@@ -49,6 +49,10 @@ public class View extends JFrame {
 	 * Indicates the current option in the game.
 	 */
 	int option = 0;
+	
+	private int thisPlayer = 1;
+	
+	private int otherPlayer = 2;
 
 	/**
 	 * Timer object for real-time updates during the game.
@@ -941,7 +945,11 @@ public class View extends JFrame {
 	 */
 	protected void sendMessage() {
 		String message = messageField.getText();
-		appendToGameLog(message + "\n");
+		appendMessage(message, thisPlayer);
+	}
+	
+	protected void appendMessage(String message, int player) {
+		appendToGameLog("["+player+"]"+ " "+ message + "\n");
 		messageField.setText("");
 	}
 
@@ -998,4 +1006,20 @@ public class View extends JFrame {
 		howToPlayDialog.setLocationRelativeTo(this);
 		howToPlayDialog.setVisible(true);
 	}
+	
+    public void setThisPlayer(int thisPlayer) {
+    	this.thisPlayer = thisPlayer;
+    }
+    
+    protected int getThisPlayer() {
+    	return thisPlayer;
+    }
+    
+    public void setOtherPlayer(int otherPlayer) {
+    	this.otherPlayer = otherPlayer;
+    }
+    
+    protected int getOtherPlayer() {
+    	return otherPlayer;
+    }
 }

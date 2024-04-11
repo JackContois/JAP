@@ -41,7 +41,7 @@ public class Controller implements ActionListener {
 
 	public void makeMove(int column) {
 		int row = -1;
-		if (model.getCurrentPlayer() == model.getThisPlayer()) {
+		if (model.getCurrentPlayer() == view.getThisPlayer()) {
 			network.sendMessage("MOVE|" + column + "," + model.getCurrentPlayer());
 			row = model.makeMove(column);
 		}
@@ -61,6 +61,10 @@ public class Controller implements ActionListener {
 				view.resetTurnTimer();
 			}
 		}
+	}
+	
+	public void recievedChat(String message) {
+		view.appendMessage(message, view.getOtherPlayer());
 	}
 
 	/**
@@ -127,6 +131,10 @@ public class Controller implements ActionListener {
 	}
 
 	public void setThisPlayer(int thisPlayer) {
-		model.setThisPlayer(thisPlayer);
+		view.setThisPlayer(thisPlayer);
+	}
+	
+	public void setOtherPlayer(int otherPlayer) {
+		view.setOtherPlayer(otherPlayer);
 	}
 }

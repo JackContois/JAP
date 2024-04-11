@@ -16,8 +16,7 @@ public class Model {
 
     /** The 2D array representing the game board. */
     private int[][] board;
-    
-    private int thisPlayer = 1;
+   
 
     /**
      * Constructs a new Model object and initializes the game board.
@@ -143,13 +142,5 @@ public class Model {
      */
     protected int getCurrentPlayer() {
     	return player;
-    }
-    
-    public void setThisPlayer(int thisPlayer) {
-    	this.thisPlayer = thisPlayer;
-    }
-    
-    protected int getThisPlayer() {
-    	return thisPlayer;
     }
 }
