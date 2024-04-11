@@ -28,11 +28,8 @@ public class Network {
     	System.out.println("Sent message: " + message);
         try {
             OutputStream output = socket.getOutputStream();
-            System.out.println("1");
             PrintWriter writer = new PrintWriter(output, true);
-            System.out.println("2");
             writer.println(message);
-            System.out.println("3");
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
