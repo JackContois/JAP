@@ -34,8 +34,11 @@ public class Controller implements ActionListener{
         this.view = view;
     }
     
+    Network network = new Network(this);
+    
     public void makeMove(int column) {
     	int row = model.makeMove(column);
+    	network.sendMessageToServer("MOVE|" + column + "," + model.getCurrentPlayer());
         if (row != -1) {
             int winner = view.checkValue(column, row);
             if(winner==0) {
@@ -84,7 +87,6 @@ public class Controller implements ActionListener{
                 break;
             case "hostGame":
             	 try {
-            		 Network network = new Network(this);
                      Thread server = new Thread(new Server(network));
                      server.start();
                  } catch (IOException ex) {
