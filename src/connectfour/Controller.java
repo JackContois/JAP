@@ -23,6 +23,8 @@ public class Controller implements ActionListener{
 	 * this is the creation of the view to use its methods
 	 */
     private View view;
+    
+    private Network network;
 
     /**
      * Constructs a Controller object with the specified model and view.
@@ -32,13 +34,14 @@ public class Controller implements ActionListener{
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        this.network = new Network(this);
     }
     
-    Network network = new Network(this);
+    
     
     public void makeMove(int column) {
     	int row = model.makeMove(column);
-    	network.sendMessageToServer("MOVE|" + column + "," + model.getCurrentPlayer());
+    	network.enqueueMessage("MOVE|" + column + "," + model.getCurrentPlayer());
         if (row != -1) {
             int winner = view.checkValue(column, row);
             if(winner==0) {
@@ -94,7 +97,7 @@ public class Controller implements ActionListener{
                  }
             	break;
             case "joinGame":
-                Thread client = new Thread(new Client());
+                Thread client = new Thread(new Client(network));
                 client.start();
         }
     }
