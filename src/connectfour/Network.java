@@ -60,13 +60,10 @@ public class Network {
                         controller.recievedMove(columnIndex);
                     }
                 } else if (message.length == 1 && message[0].trim().equals("RESTART")) { 
-                		System.out.println("RESTARTING");
                 		controller.confirm();
                 }else if (message.length == 2 && message[0].trim().equals("CONFIRMED")) {
-                	System.out.println("received");
                 	String[] confirmInfo = message[1].trim().split(",");
                 	String confirmMessage = confirmInfo[0].trim();
-                	System.out.println(confirmMessage);
                     if (confirmMessage.equals("yes")) {
                     	controller.resetGame();
                     } else {
