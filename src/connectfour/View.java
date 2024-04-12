@@ -286,6 +286,7 @@ public class View extends JFrame {
 	
 	private JMenuItem n1;
 	private JMenuItem n2;
+	private JMenuItem n3;
 
 	/**
 	 * Manager for handling language localization.
@@ -808,6 +809,7 @@ public class View extends JFrame {
 		h1 = new JMenuItem();
 		n1 = new JMenuItem("Host Game");
 		n2 = new JMenuItem("Join Game");
+		n3 = new JMenuItem("Disconnect");
 
 		// Add menu items to menus
 		g.add(g1);
@@ -817,6 +819,7 @@ public class View extends JFrame {
 		h.add(h1);
 		n.add(n1);
 		n.add(n2);
+		n.add(n3);
 
 		// Add menus to menu bar
 		menuBar.add(g);
@@ -943,9 +946,10 @@ public class View extends JFrame {
 	/**
 	 * Appends a message to the chat area.
 	 */
-	protected void sendMessage() {
+	protected String sendMessage() {
 		String message = messageField.getText();
 		appendMessage(message, thisPlayer);
+		return message;
 	}
 	
 	protected void appendMessage(String message, int player) {
@@ -1006,6 +1010,19 @@ public class View extends JFrame {
 		howToPlayDialog.setLocationRelativeTo(this);
 		howToPlayDialog.setVisible(true);
 	}
+	
+	protected void confirm() {
+        int option = JOptionPane.showConfirmDialog(null, "The other Player wants to reset the game? Would you like to?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        
+        if (option == JOptionPane.YES_OPTION) {
+        	controller.confirmed("yes");
+            System.out.println("Confirmed!");
+            controller.resetGame();
+        } else {
+        	controller.confirmed("no");
+            System.out.println("Cancelled!");
+        }
+    }
 	
     public void setThisPlayer(int thisPlayer) {
     	this.thisPlayer = thisPlayer;

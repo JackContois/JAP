@@ -78,11 +78,7 @@ public class Controller implements ActionListener {
 
 		switch (command) {
 		case "restart":
-			view.resetGame();
-			view.resetGameTimer();
-			view.resetTurnTimer();
-			view.stopTimerThread();
-			view.startTimerThread();
+			network.sendMessage("RESTART|");
 			break;
 		case "quit":
 			System.exit(0);
@@ -98,7 +94,8 @@ public class Controller implements ActionListener {
 			view.updateTurnTimer();
 			break;
 		case "send":
-			view.sendMessage();
+			String message = view.sendMessage();
+			network.sendMessage("CHAT|" + message);
 			break;
 		case "howToPlay":
 			view.showHowToPlayDialog();
@@ -136,5 +133,21 @@ public class Controller implements ActionListener {
 	
 	public void setOtherPlayer(int otherPlayer) {
 		view.setOtherPlayer(otherPlayer);
+	}
+	
+	public void confirm() {
+		view.confirm();
+	}
+	
+	public void confirmed(String option) {
+		network.sendMessage("CONFIRMED|" + option);
+	}
+	
+	public void resetGame() {
+		view.resetGame();
+		view.resetGameTimer();
+		view.resetTurnTimer();
+		view.stopTimerThread();
+		view.startTimerThread();
 	}
 }

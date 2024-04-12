@@ -1,8 +1,6 @@
 package connectfour;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -21,6 +19,7 @@ public class Client implements Runnable {
     public void run() {
         try (Socket socket = new Socket(HOSTNAME, PORT)) {
         	controller.setThisPlayer(2);
+        	controller.setOtherPlayer(1);
         	network.setSocket(socket);
             network.handleMessage();
         } catch (UnknownHostException ex) {

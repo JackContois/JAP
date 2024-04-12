@@ -3,8 +3,6 @@ package connectfour;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Queue;
-import java.util.LinkedList;
 
 public class Network {
 
@@ -30,10 +28,11 @@ public class Network {
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
             writer.println(message);
+            System.out.println("Sent");
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
-            System.out.println("I/O error2: " + ex.getMessage());
+            System.out.println("I/O error: " + ex.getMessage());
         }
     }
 
@@ -44,9 +43,14 @@ public class Network {
             String command;
             while ((command = read.readLine()) != null) {
                 String[] message = command.split("\\|");
-
+                /* Handle chat messages */
+                if (message.length == 2 && message[0].trim().equals("CHAT")) {
+                	System.out.println("received");
+                	String chatMessage = command.substring(command.indexOf("CHAT|") + "CHAT|".length());
+                    controller.recievedChat(chatMessage);
+                    }
                 /* Handle game moves */
-                if (message.length == 2 && message[0].trim().equals("MOVE")) {
+                else if (message.length == 2 && message[0].trim().equals("MOVE")) {
                     String[] moveInfo = message[1].trim().split(",");
                     if (moveInfo.length == 2) {
                         int columnIndex = Integer.parseInt(moveInfo[0].trim());
@@ -55,15 +59,18 @@ public class Network {
                         // call methods to update board based on move
                         controller.recievedMove(columnIndex);
                     }
-                }
-                /* Handle chat messages */
-                else if (message.length == 2 && message[0].trim().equals("CHAT")) {
-                    String[] chatInfo = message[1].trim().split(","); 
-                    if (chatInfo.length == 2) {
-                        String chatMessage = chatInfo[0].trim();
-                        int player = Integer.parseInt(chatInfo[1].trim());
-
-                        // call methods to update chat panel based on message
+                } else if (message.length == 1 && message[0].trim().equals("RESTART")) { 
+                		System.out.println("RESTARTING");
+                		controller.confirm();
+                }else if (message.length == 2 && message[0].trim().equals("CONFIRMED")) {
+                	System.out.println("received");
+                	String[] confirmInfo = message[1].trim().split(",");
+                	String confirmMessage = confirmInfo[0].trim();
+                	System.out.println(confirmMessage);
+                    if (confirmMessage.equals("yes")) {
+                    	controller.resetGame();
+                    } else {
+                    	controller.recievedChat("The other player has denied your reset request");
                     }
                 }
             }
