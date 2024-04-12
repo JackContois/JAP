@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Network {
-
     private Model model;
     private Controller controller;
     private final String HOSTNAME = "127.0.0.1";

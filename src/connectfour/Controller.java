@@ -1,5 +1,7 @@
 package connectfour;
 
+
+import java.net.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -102,6 +104,12 @@ public class Controller implements ActionListener {
 			break;
 		case "deleteDialog":
 			view.deleteDialog();
+			break;
+		case "verifyHost":
+			view.handleHostData();
+			break;
+		case "hostDialog":
+			view.hostDialog();
 			break;
 		case "hostGame":
 			try {

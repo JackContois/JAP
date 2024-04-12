@@ -347,6 +347,19 @@ public class View extends JFrame {
 	 * Message displayed when the game ends in a draw.
 	 */
 	String drawMessage;
+	
+	String hostPlayerName;
+	String clientPlayerName;
+	String portText;
+	String addressText;
+	String statusText;
+	String hostButtonText;
+	String cancelButtonText;
+	String connectButtonText;
+	
+	JTextField hostField;
+	JTextField portField;
+	JLabel statusMessage;
 
 	
 	/**
@@ -592,7 +605,94 @@ public class View extends JFrame {
 		});
 
 	}
+	
+	protected void hostDialog() {
+		// adding dialog components
+		JDialog dialog = new JDialog(this, "Host Game",true);
+		JLabel hostName = new JLabel("Name:");
+		hostField = new JTextField();
+		JPanel hostPanel = new JPanel();
+		JLabel port = new JLabel("Port:");
+		portField = new JTextField();
+		JPanel portPanel = new JPanel();
+		JLabel status = new JLabel("Status");
+		statusMessage = new JLabel();
+		JPanel statusPanel = new JPanel();
+		JButton hostButton = new JButton("Host");
+		JButton cancelButton = new JButton("Cancel");
+		JPanel buttonPanel = new JPanel();
+		
+		// host button
+		hostButton.addActionListener(controller);
+		hostButton.setActionCommand("verifyHost");
+		
+		// configuring dialog box
+		dialog.setSize(new Dimension(300, 250));
+		dialog.setLayout(new GridLayout(4,1));
+		
+		// configuring the text fields
+		hostField.setPreferredSize(new Dimension(100,20));
+		portField.setPreferredSize(new Dimension(100, 20));
+		
+		// adding components 
+		hostPanel.add(hostName);
+		hostPanel.add(hostField);
+		dialog.add(hostPanel);
+		portPanel.add(port);
+		portPanel.add(portField);
+		dialog.add(portPanel);
+		statusPanel.add(status);
+		statusPanel.add(statusMessage);
+		dialog.add(statusPanel);
+		buttonPanel.add(hostButton);
+		buttonPanel.add(cancelButton);
+		dialog.add(buttonPanel);
+		
+		
 
+		// making visible
+		dialog.setLocationRelativeTo(this);
+		dialog.setVisible(true);
+
+		// check text entry
+		
+	}
+	
+	protected void handleHostData() {
+		String hostName = hostField.getText();
+		String portName = portField.getText();
+		int portAsInt = 0;
+		if(!portName.isEmpty() && !hostName.isEmpty()) {
+		try {
+			portAsInt = Integer.parseInt(portName);
+			if(portAsInt < 1020 || portAsInt > 65535) {
+				System.out.println("port is out of range [1020 - 65535]");
+				statusMessage.setText("port is out of range [1020 - 65535]");
+			}
+			else if(!hostName.matches("[a-zA-Z]+")) {
+				statusMessage.setText("invalid name, letters only");
+			}
+			
+			else {
+				statusMessage.setText("Opening Connection");
+				System.out.println(hostName);
+				System.out.println(portName);
+			}
+		}catch(NumberFormatException e) {
+			statusMessage.setText("port is not a number");
+		}
+		} else {
+			statusMessage.setText("fill out both boxes bitch");
+		}
+		
+		
+
+		
+	}
+
+	protected void clientDialog() {
+		
+	}
 	/**
 	 * Loads images for the red and black chips, as well as for empty cells, from the resources folder.
 	 * Displays an error message if any image fails to load.
@@ -847,7 +947,7 @@ public class View extends JFrame {
 		h1.setActionCommand("howToPlay");
 		
 		n1.addActionListener(controller);
-		n1.setActionCommand("hostGame");
+		n1.setActionCommand("hostDialog");
 		
 		n2.addActionListener(controller);
 		n2.setActionCommand("joinGame");
