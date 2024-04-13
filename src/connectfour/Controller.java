@@ -125,6 +125,12 @@ public class Controller implements ActionListener {
 		case "verifyClient":
 			view.handleClientData();
 			break;
+		case "cancelHost":
+			view.hostDialog.dispose();
+			break;
+		case "cancelClient":
+			view.clientDialog.dispose();
+			break;
 		case "joinGame":
 			Thread client = new Thread(new Client(network, this));
 			client.start();

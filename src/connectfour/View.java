@@ -49,9 +49,9 @@ public class View extends JFrame {
 	 * Indicates the current option in the game.
 	 */
 	int option = 0;
-	
+
 	private int thisPlayer = 1;
-	
+
 	private int otherPlayer = 2;
 
 	/**
@@ -283,7 +283,7 @@ public class View extends JFrame {
 	 * Menu item for changing the language to French.
 	 */
 	private JMenuItem l2;
-	
+
 	private JMenuItem n1;
 	private JMenuItem n2;
 	private JMenuItem n3;
@@ -302,7 +302,7 @@ public class View extends JFrame {
 	 * Text area for the game log
 	 */
 	private JTextArea gameLogTextArea;
-	
+
 	/**
 	 * The selected language for the GUI.
 	 */
@@ -347,8 +347,10 @@ public class View extends JFrame {
 	 * Message displayed when the game ends in a draw.
 	 */
 	String drawMessage;
-	
-	
+
+	JDialog clientDialog;
+	JDialog hostDialog;
+
 	JTextField hostNameField;
 	JTextField hostPortField;
 	JTextField clientNameField;
@@ -360,11 +362,11 @@ public class View extends JFrame {
 	JLabel hostStatusMessage;
 	JLabel clientStatusMessage;
 
-	
+
 	/**
-     * Constructs a View object associated with the specified model.
-     * @param model The Model object representing the game's logic.
-     */
+	 * Constructs a View object associated with the specified model.
+	 * @param model The Model object representing the game's logic.
+	 */
 	public View(Model model) {
 		SwingUtilities.invokeLater(() -> {
 			this.model = model;
@@ -544,38 +546,38 @@ public class View extends JFrame {
 	}
 
 	/**
-     * Updates the game timer display.
-     */
+	 * Updates the game timer display.
+	 */
 	public void updateGameTimer() {
 		gameTimerText.updateTimer();
 	}
 
 	/**
-     * Updates the turn timer display.
-     */
+	 * Updates the turn timer display.
+	 */
 	public void updateTurnTimer() {
 		turnTimerText.updateTimer();
 	}
 
 	/**
-     * Resets the game timer.
-     */
+	 * Resets the game timer.
+	 */
 	public void resetGameTimer() {
 		gameTimerText.resetTimer();
 
 	}
 
 	/**
-     * Resets the turn timer.
-     */
+	 * Resets the turn timer.
+	 */
 	public void resetTurnTimer() {
 		turnTimerText.resetTimer();
 
 	}
 
 	/**
-     * Creates and starts the timer thread.
-     */
+	 * Creates and starts the timer thread.
+	 */
 	protected void createTimerThread() {
 		SwingUtilities.invokeLater(() -> {
 			realTime = new Timer(1000, controller);
@@ -586,8 +588,8 @@ public class View extends JFrame {
 	}
 
 	/**
-     * Starts the timer thread.
-     */
+	 * Starts the timer thread.
+	 */
 	protected void startTimerThread() {
 		SwingUtilities.invokeLater(() -> {
 			realTime.start();
@@ -596,18 +598,18 @@ public class View extends JFrame {
 	}
 
 	/**
-     * Stops the timer thread.
-     */
+	 * Stops the timer thread.
+	 */
 	protected void stopTimerThread() {
 		SwingUtilities.invokeLater(() -> {
 			realTime.stop();
 		});
 
 	}
-	
+
 	protected void hostDialog() {
 		// adding dialog components
-		JDialog dialog = new JDialog(this, "Host Game",true);
+		hostDialog = new JDialog(this, "Host Game",true);
 		JLabel hostName = new JLabel("Name:");
 		hostNameField = new JTextField();
 		JPanel hostPanel = new JPanel();
@@ -620,76 +622,80 @@ public class View extends JFrame {
 		JButton hostButton = new JButton("Host");
 		JButton cancelButton = new JButton("Cancel");
 		JPanel buttonPanel = new JPanel();
-		
+
 		// host button
 		hostButton.addActionListener(controller);
 		hostButton.setActionCommand("verifyHost");
 		
+		// cancel button
+		cancelButton.addActionListener(controller);
+		cancelButton.setActionCommand("cancelHost");
+
 		// configuring dialog box
-		dialog.setSize(new Dimension(300, 250));
-		dialog.setLayout(new GridLayout(4,1));
-		
+		hostDialog.setSize(new Dimension(300, 250));
+		hostDialog.setLayout(new GridLayout(4,1));
+
 		// configuring the text fields
 		hostNameField.setPreferredSize(new Dimension(100,20));
 		hostPortField.setPreferredSize(new Dimension(100, 20));
-		
+
 		// adding components 
 		hostPanel.add(hostName);
 		hostPanel.add(hostNameField);
-		dialog.add(hostPanel);
+		hostDialog.add(hostPanel);
 		portPanel.add(port);
 		portPanel.add(hostPortField);
-		dialog.add(portPanel);
+		hostDialog.add(portPanel);
 		statusPanel.add(status);
 		statusPanel.add(hostStatusMessage);
-		dialog.add(statusPanel);
+		hostDialog.add(statusPanel);
 		buttonPanel.add(hostButton);
 		buttonPanel.add(cancelButton);
-		dialog.add(buttonPanel);
-		
-		
+		hostDialog.add(buttonPanel);
+
+
 
 		// making visible
-		dialog.setLocationRelativeTo(this);
-		dialog.setVisible(true);
+		hostDialog.setLocationRelativeTo(this);
+		hostDialog.setVisible(true);
 
 	}
-	
+
 	protected void handleHostData() {
 		String hostName = hostNameField.getText();
 		String portName = hostPortField.getText();
 		int portAsInt = 0;
 		if(!portName.isEmpty() && !hostName.isEmpty()) {
-		try {
-			portAsInt = Integer.parseInt(portName);
-			if(portAsInt < 1020 || portAsInt > 65535) {
-				hostStatusMessage.setText("port is out of range [1020 - 65535]");
+			try {
+				portAsInt = Integer.parseInt(portName);
+				if(portAsInt < 1020 || portAsInt > 65535) {
+					hostStatusMessage.setText("port is out of range [1020 - 65535]");
+				}
+				else if(!hostName.matches("[a-zA-Z]+")) {
+					hostStatusMessage.setText("invalid name, letters only");
+				}
+
+				else {
+					hostStatusMessage.setText("Opening Connection");
+					System.out.println(hostName);
+					System.out.println(portName);
+				}
+			}catch(NumberFormatException e) {
+				hostStatusMessage.setText("port is not a number");
 			}
-			else if(!hostName.matches("[a-zA-Z]+")) {
-				hostStatusMessage.setText("invalid name, letters only");
-			}
-			
-			else {
-				hostStatusMessage.setText("Opening Connection");
-				System.out.println(hostName);
-				System.out.println(portName);
-			}
-		}catch(NumberFormatException e) {
-			hostStatusMessage.setText("port is not a number");
-		}
 		} else {
 			hostStatusMessage.setText("must enter both a name and a port");
 		}
-		
+
 	}
 
 	protected void clientDialog() {
 		// adding dialog components
-		JDialog dialog = new JDialog(this, "Join Game",true);
+		clientDialog = new JDialog(this, "Join Game",true);
 		JLabel clientName = new JLabel("Name:");
 		clientNameField = new JTextField();
 		JPanel clientPanel = new JPanel();
-		
+
 		// address components
 		JLabel address = new JLabel("Address:");
 		addressField1 = new JTextField();
@@ -697,8 +703,8 @@ public class View extends JFrame {
 		addressField3 = new JTextField();
 		addressField4 = new JTextField();
 		JPanel addressPanel = new JPanel();
-		
-		
+
+
 		JLabel port = new JLabel("Port:");
 		clientPortField = new JTextField();
 		JPanel portPanel = new JPanel();
@@ -708,15 +714,19 @@ public class View extends JFrame {
 		JButton connectButton = new JButton("Connect");
 		JButton cancelButton = new JButton("Cancel");
 		JPanel buttonPanel = new JPanel();
-		
+
 		// connect button
 		connectButton.addActionListener(controller);
 		connectButton.setActionCommand("verifyClient");
 		
-		// configuring dialog box
-		dialog.setSize(new Dimension(300, 250));
-		dialog.setLayout(new GridLayout(5,1));
+		// cancel button
+		cancelButton.addActionListener(controller);
+		cancelButton.setActionCommand("cancelClient");
 		
+		// configuring dialog box
+		clientDialog.setSize(new Dimension(300, 250));
+		clientDialog.setLayout(new GridLayout(5,1));
+
 		// configuring the text fields
 		clientNameField.setPreferredSize(new Dimension(100,20));
 		clientPortField.setPreferredSize(new Dimension(100, 20));
@@ -727,72 +737,89 @@ public class View extends JFrame {
 
 
 
-		
+
 		// adding name components
 		clientPanel.add(clientName);
 		clientPanel.add(clientNameField);
-		dialog.add(clientPanel);
-		
+		clientDialog.add(clientPanel);
+
 		// adding address components 
 		addressPanel.add(address);
 		addressPanel.add(addressField1);
 		addressPanel.add(addressField2);
 		addressPanel.add(addressField3);
 		addressPanel.add(addressField4);
-		dialog.add(addressPanel);
-		
+		clientDialog.add(addressPanel);
+
 		// adding port components
 		portPanel.add(port);
 		portPanel.add(clientPortField);
-		dialog.add(portPanel);
-		
+		clientDialog.add(portPanel);
+
 		// adding status message components
 		statusPanel.add(status);
 		statusPanel.add(clientStatusMessage);
-		dialog.add(statusPanel);
-		
+		clientDialog.add(statusPanel);
+
 		// adding button components
 		buttonPanel.add(connectButton);
 		buttonPanel.add(cancelButton);
-		dialog.add(buttonPanel);
-		
-		
+		clientDialog.add(buttonPanel);
+
+
 
 		// making visible
-		dialog.setLocationRelativeTo(this);
-		dialog.setVisible(true);
+		clientDialog.setLocationRelativeTo(this);
+		clientDialog.setVisible(true);
 	}
-	
+
 	protected void handleClientData() {
 		String clientName = clientNameField.getText();
 		String portName = clientPortField.getText();
 		String addressPartOne = addressField1.getText();
 		String addressPartTwo = addressField2.getText();
 		String addressPartThree = addressField3.getText();
-		String addressPartFour = addressField3.getText();
-		
+		String addressPartFour = addressField4.getText();
+
 
 		int portAsInt = 0;
-		if(!portName.isEmpty() && !clientName.isEmpty() && !addressPartOne.isEmpty() ) {
-		try {
-			portAsInt = Integer.parseInt(portName);
-			if(portAsInt < 1020 || portAsInt > 65535) {
-				hostStatusMessage.setText("port is out of range [1020 - 65535]");
+		int addressPartOneAsInt = 0;
+		int addressPartTwoAsInt = 0;
+		int addressPartThreeAsInt = 0;
+		int addressPartFourAsInt = 0;
+
+		if(!portName.isEmpty() && !clientName.isEmpty() && !addressPartOne.isEmpty() && !addressPartTwo.isEmpty() && !addressPartThree.isEmpty() && !addressPartFour.isEmpty()) {
+
+			if(addressPartOne.length() == 3 && addressPartTwo.length() == 3 && addressPartThree.length() == 3 && addressPartFour.length() == 3 ) {
+
+			try {
+				addressPartOneAsInt = Integer.parseInt(addressPartOne);
+				addressPartTwoAsInt = Integer.parseInt(addressPartTwo);
+				addressPartThreeAsInt = Integer.parseInt(addressPartThree);
+				addressPartFourAsInt = Integer.parseInt(addressPartFour);
+				portAsInt = Integer.parseInt(portName);
+				if(portAsInt < 1020 || portAsInt > 65535) {
+					clientStatusMessage.setText("port is out of range [1020 - 65535]");
+				}
+				else if(!clientName.matches("[a-zA-Z]+")) {
+					clientStatusMessage.setText("invalid name, letters only");
+				}
+
+				else {
+					// successful data entry 
+					clientStatusMessage.setText("Connecting");
+					System.out.println(clientName);
+					System.out.println(portName);
+				}
+			}catch(NumberFormatException e) {
+				clientStatusMessage.setText("port or address is not a number");
 			}
-			else if(!clientName.matches("[a-zA-Z]+")) {
-				hostStatusMessage.setText("invalid name, letters only");
 			}
-			
 			else {
-				hostStatusMessage.setText("Connecting");
-				System.out.println(clientName);
-				System.out.println(portName);
+				clientStatusMessage.setText("each adress section must have 3 integers");
 			}
-		}catch(NumberFormatException e) {
-			hostStatusMessage.setText("port is not a number");
-		}
 		} else {
-			hostStatusMessage.setText("must fill all inputs appropriately");
+			clientStatusMessage.setText("must fill all inputs appropriately");
 		}
 	}
 	/**
@@ -1047,10 +1074,10 @@ public class View extends JFrame {
 
 		h1.addActionListener(controller);
 		h1.setActionCommand("howToPlay");
-		
+
 		n1.addActionListener(controller);
 		n1.setActionCommand("hostDialog");
-		
+
 		n2.addActionListener(controller);
 		n2.setActionCommand("clientDialog");
 	}
@@ -1153,7 +1180,7 @@ public class View extends JFrame {
 		appendMessage(message, thisPlayer);
 		return message;
 	}
-	
+
 	protected void appendMessage(String message, int player) {
 		appendToGameLog("["+player+"]"+ " "+ message + "\n");
 		messageField.setText("");
@@ -1212,33 +1239,33 @@ public class View extends JFrame {
 		howToPlayDialog.setLocationRelativeTo(this);
 		howToPlayDialog.setVisible(true);
 	}
-	
+
 	protected void confirm() {
-        int option = JOptionPane.showConfirmDialog(null, "The other Player wants to reset the game? Would you like to?", "Confirmation", JOptionPane.YES_NO_OPTION);
-        
-        if (option == JOptionPane.YES_OPTION) {
-        	controller.confirmed("yes");
-            System.out.println("Confirmed!");
-            controller.resetGame();
-        } else {
-        	controller.confirmed("no");
-            System.out.println("Cancelled!");
-        }
-    }
-	
-    public void setThisPlayer(int thisPlayer) {
-    	this.thisPlayer = thisPlayer;
-    }
-    
-    protected int getThisPlayer() {
-    	return thisPlayer;
-    }
-    
-    public void setOtherPlayer(int otherPlayer) {
-    	this.otherPlayer = otherPlayer;
-    }
-    
-    protected int getOtherPlayer() {
-    	return otherPlayer;
-    }
+		int option = JOptionPane.showConfirmDialog(null, "The other Player wants to reset the game? Would you like to?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+		if (option == JOptionPane.YES_OPTION) {
+			controller.confirmed("yes");
+			System.out.println("Confirmed!");
+			controller.resetGame();
+		} else {
+			controller.confirmed("no");
+			System.out.println("Cancelled!");
+		}
+	}
+
+	public void setThisPlayer(int thisPlayer) {
+		this.thisPlayer = thisPlayer;
+	}
+
+	protected int getThisPlayer() {
+		return thisPlayer;
+	}
+
+	public void setOtherPlayer(int otherPlayer) {
+		this.otherPlayer = otherPlayer;
+	}
+
+	protected int getOtherPlayer() {
+		return otherPlayer;
+	}
 }
