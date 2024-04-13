@@ -119,6 +119,12 @@ public class Controller implements ActionListener {
 				ex.printStackTrace();
 			}
 			break;
+		case "clientDialog":
+			view.clientDialog();
+			break;
+		case "verifyClient":
+			view.handleClientData();
+			break;
 		case "joinGame":
 			Thread client = new Thread(new Client(network, this));
 			client.start();

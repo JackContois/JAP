@@ -348,18 +348,17 @@ public class View extends JFrame {
 	 */
 	String drawMessage;
 	
-	String hostPlayerName;
-	String clientPlayerName;
-	String portText;
-	String addressText;
-	String statusText;
-	String hostButtonText;
-	String cancelButtonText;
-	String connectButtonText;
 	
-	JTextField hostField;
-	JTextField portField;
-	JLabel statusMessage;
+	JTextField hostNameField;
+	JTextField hostPortField;
+	JTextField clientNameField;
+	JTextField clientPortField;
+	JTextField addressField1;
+	JTextField addressField2;
+	JTextField addressField3;
+	JTextField addressField4;
+	JLabel hostStatusMessage;
+	JLabel clientStatusMessage;
 
 	
 	/**
@@ -610,13 +609,13 @@ public class View extends JFrame {
 		// adding dialog components
 		JDialog dialog = new JDialog(this, "Host Game",true);
 		JLabel hostName = new JLabel("Name:");
-		hostField = new JTextField();
+		hostNameField = new JTextField();
 		JPanel hostPanel = new JPanel();
 		JLabel port = new JLabel("Port:");
-		portField = new JTextField();
+		hostPortField = new JTextField();
 		JPanel portPanel = new JPanel();
 		JLabel status = new JLabel("Status");
-		statusMessage = new JLabel();
+		hostStatusMessage = new JLabel();
 		JPanel statusPanel = new JPanel();
 		JButton hostButton = new JButton("Host");
 		JButton cancelButton = new JButton("Cancel");
@@ -631,18 +630,18 @@ public class View extends JFrame {
 		dialog.setLayout(new GridLayout(4,1));
 		
 		// configuring the text fields
-		hostField.setPreferredSize(new Dimension(100,20));
-		portField.setPreferredSize(new Dimension(100, 20));
+		hostNameField.setPreferredSize(new Dimension(100,20));
+		hostPortField.setPreferredSize(new Dimension(100, 20));
 		
 		// adding components 
 		hostPanel.add(hostName);
-		hostPanel.add(hostField);
+		hostPanel.add(hostNameField);
 		dialog.add(hostPanel);
 		portPanel.add(port);
-		portPanel.add(portField);
+		portPanel.add(hostPortField);
 		dialog.add(portPanel);
 		statusPanel.add(status);
-		statusPanel.add(statusMessage);
+		statusPanel.add(hostStatusMessage);
 		dialog.add(statusPanel);
 		buttonPanel.add(hostButton);
 		buttonPanel.add(cancelButton);
@@ -654,44 +653,147 @@ public class View extends JFrame {
 		dialog.setLocationRelativeTo(this);
 		dialog.setVisible(true);
 
-		// check text entry
-		
 	}
 	
 	protected void handleHostData() {
-		String hostName = hostField.getText();
-		String portName = portField.getText();
+		String hostName = hostNameField.getText();
+		String portName = hostPortField.getText();
 		int portAsInt = 0;
 		if(!portName.isEmpty() && !hostName.isEmpty()) {
 		try {
 			portAsInt = Integer.parseInt(portName);
 			if(portAsInt < 1020 || portAsInt > 65535) {
-				System.out.println("port is out of range [1020 - 65535]");
-				statusMessage.setText("port is out of range [1020 - 65535]");
+				hostStatusMessage.setText("port is out of range [1020 - 65535]");
 			}
 			else if(!hostName.matches("[a-zA-Z]+")) {
-				statusMessage.setText("invalid name, letters only");
+				hostStatusMessage.setText("invalid name, letters only");
 			}
 			
 			else {
-				statusMessage.setText("Opening Connection");
+				hostStatusMessage.setText("Opening Connection");
 				System.out.println(hostName);
 				System.out.println(portName);
 			}
 		}catch(NumberFormatException e) {
-			statusMessage.setText("port is not a number");
+			hostStatusMessage.setText("port is not a number");
 		}
 		} else {
-			statusMessage.setText("fill out both boxes bitch");
+			hostStatusMessage.setText("must enter both a name and a port");
 		}
-		
-		
-
 		
 	}
 
 	protected void clientDialog() {
+		// adding dialog components
+		JDialog dialog = new JDialog(this, "Join Game",true);
+		JLabel clientName = new JLabel("Name:");
+		clientNameField = new JTextField();
+		JPanel clientPanel = new JPanel();
 		
+		// address components
+		JLabel address = new JLabel("Address:");
+		addressField1 = new JTextField();
+		addressField2 = new JTextField();
+		addressField3 = new JTextField();
+		addressField4 = new JTextField();
+		JPanel addressPanel = new JPanel();
+		
+		
+		JLabel port = new JLabel("Port:");
+		clientPortField = new JTextField();
+		JPanel portPanel = new JPanel();
+		JLabel status = new JLabel("Status");
+		clientStatusMessage = new JLabel();
+		JPanel statusPanel = new JPanel();
+		JButton connectButton = new JButton("Connect");
+		JButton cancelButton = new JButton("Cancel");
+		JPanel buttonPanel = new JPanel();
+		
+		// connect button
+		connectButton.addActionListener(controller);
+		connectButton.setActionCommand("verifyClient");
+		
+		// configuring dialog box
+		dialog.setSize(new Dimension(300, 250));
+		dialog.setLayout(new GridLayout(5,1));
+		
+		// configuring the text fields
+		clientNameField.setPreferredSize(new Dimension(100,20));
+		clientPortField.setPreferredSize(new Dimension(100, 20));
+		addressField1.setPreferredSize(new Dimension(30, 20));
+		addressField2.setPreferredSize(new Dimension(30, 20));
+		addressField3.setPreferredSize(new Dimension(30, 20));
+		addressField4.setPreferredSize(new Dimension(30, 20));
+
+
+
+		
+		// adding name components
+		clientPanel.add(clientName);
+		clientPanel.add(clientNameField);
+		dialog.add(clientPanel);
+		
+		// adding address components 
+		addressPanel.add(address);
+		addressPanel.add(addressField1);
+		addressPanel.add(addressField2);
+		addressPanel.add(addressField3);
+		addressPanel.add(addressField4);
+		dialog.add(addressPanel);
+		
+		// adding port components
+		portPanel.add(port);
+		portPanel.add(clientPortField);
+		dialog.add(portPanel);
+		
+		// adding status message components
+		statusPanel.add(status);
+		statusPanel.add(clientStatusMessage);
+		dialog.add(statusPanel);
+		
+		// adding button components
+		buttonPanel.add(connectButton);
+		buttonPanel.add(cancelButton);
+		dialog.add(buttonPanel);
+		
+		
+
+		// making visible
+		dialog.setLocationRelativeTo(this);
+		dialog.setVisible(true);
+	}
+	
+	protected void handleClientData() {
+		String clientName = clientNameField.getText();
+		String portName = clientPortField.getText();
+		String addressPartOne = addressField1.getText();
+		String addressPartTwo = addressField2.getText();
+		String addressPartThree = addressField3.getText();
+		String addressPartFour = addressField3.getText();
+		
+
+		int portAsInt = 0;
+		if(!portName.isEmpty() && !clientName.isEmpty() && !addressPartOne.isEmpty() ) {
+		try {
+			portAsInt = Integer.parseInt(portName);
+			if(portAsInt < 1020 || portAsInt > 65535) {
+				hostStatusMessage.setText("port is out of range [1020 - 65535]");
+			}
+			else if(!clientName.matches("[a-zA-Z]+")) {
+				hostStatusMessage.setText("invalid name, letters only");
+			}
+			
+			else {
+				hostStatusMessage.setText("Connecting");
+				System.out.println(clientName);
+				System.out.println(portName);
+			}
+		}catch(NumberFormatException e) {
+			hostStatusMessage.setText("port is not a number");
+		}
+		} else {
+			hostStatusMessage.setText("must fill all inputs appropriately");
+		}
 	}
 	/**
 	 * Loads images for the red and black chips, as well as for empty cells, from the resources folder.
@@ -950,7 +1052,7 @@ public class View extends JFrame {
 		n1.setActionCommand("hostDialog");
 		
 		n2.addActionListener(controller);
-		n2.setActionCommand("joinGame");
+		n2.setActionCommand("clientDialog");
 	}
 
 	/**
