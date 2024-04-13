@@ -807,8 +807,10 @@ public class View extends JFrame {
 
 				else {
 					// successful data entry 
+					String address = addressPartOne + "." + addressPartTwo + "." + addressPartThree + "." + addressPartFour;
 					clientStatusMessage.setText("Connecting");
 					System.out.println(clientName);
+					System.out.println(address);
 					System.out.println(portName);
 				}
 			}catch(NumberFormatException e) {
