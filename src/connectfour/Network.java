@@ -1,22 +1,38 @@
 package connectfour;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * Handles communication between the client and the server in the Connect Four game.
+ */
 public class Network {
     private Controller controller;
     private Socket socket;
     
+    /**
+     * Constructs a Network instance associated with the provided controller.
+     * 
+     * @param controller The controller instance handling the game logic.
+     */
     public Network(Controller controller) {
         this.controller = controller;
     }
     
+    /**
+     * Sets the socket for communication.
+     * 
+     * @param socket The socket for communication.
+     */
     public void setSocket(Socket socket) {
     	this.socket = socket;
     }
 
-    // Method to send a message to either server or client
+    /**
+     * Sends a message to the connected server or client.
+     * 
+     * @param message The message to be sent.
+     */
     public void sendMessage(String message) {
         try {
             OutputStream output = socket.getOutputStream();
@@ -30,19 +46,22 @@ public class Network {
         }
     }
 
-
+    /**
+     * Handles incoming messages from the server or client.
+     */
     public void handleMessage() {
         try (BufferedReader read = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-        	System.out.println("Recieved");
+        	System.out.println("Received");
             String command;
             while ((command = read.readLine()) != null) {
                 String[] message = command.split("\\|");
+                
                 /* Handle chat messages */
                 if (message.length == 2 && message[0].trim().equals("CHAT")) {
-                	System.out.println("received");
+                	System.out.println("Received");
                 	String chatMessage = command.substring(command.indexOf("CHAT|") + "CHAT|".length());
                     controller.recievedChat(chatMessage);
-                    }
+                }
                 /* Handle game moves */
                 else if (message.length == 2 && message[0].trim().equals("MOVE")) {
                     String[] moveInfo = message[1].trim().split(",");
@@ -50,12 +69,12 @@ public class Network {
                         int columnIndex = Integer.parseInt(moveInfo[0].trim());
                         int player = Integer.parseInt(moveInfo[1].trim());
                         
-                        // call methods to update board based on move
+                        // Call methods to update board based on move
                         controller.recievedMove(columnIndex);
                     }
                 } else if (message.length == 1 && message[0].trim().equals("RESTART")) { 
                 		controller.confirm();
-                }else if (message.length == 2 && message[0].trim().equals("CONFIRMED")) {
+                } else if (message.length == 2 && message[0].trim().equals("CONFIRMED")) {
                 	String[] confirmInfo = message[1].trim().split(",");
                 	String confirmMessage = confirmInfo[0].trim();
                     if (confirmMessage.equals("yes")) {
@@ -86,19 +105,30 @@ public class Network {
 		}
     }
     
+    /**
+     * Sets the name of the local player.
+     * 
+     * @param name The name of the local player.
+     */
     public void setMyName(String name) {
     	controller.setMyName(name);
     }
     
+    /**
+     * Resets the game state.
+     */
     public void resetGame() {
     	controller.resetGame();
     }
     
+    /**
+     * Disconnects from the server or client.
+     */
     public void disconnect() {
     	try {
         	socket.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

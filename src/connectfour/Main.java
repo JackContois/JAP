@@ -20,5 +20,6 @@ public class Main {
             view.setModel(model);
             view.setVisible(true);
             view.setResizable(false);
+            
     }
 }

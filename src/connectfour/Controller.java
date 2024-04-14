@@ -1,32 +1,20 @@
 package connectfour;
-
-
-import java.net.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
-
 /**
  * The Controller class handles user interactions and updates the model and view
  * accordingly.
  */
 public class Controller implements ActionListener {
-	/**
-	 * this is the creation of the model to use its methods
-	 */
+	/** The model of the game. */
 	private Model model;
-	/**
-	 * this is the creation of the view to use its methods
-	 */
+	/** The view of the game. */
 	private View view;
-
+	/** The network handler for communication. */
 	private Network network;
 
 	/**
@@ -41,6 +29,11 @@ public class Controller implements ActionListener {
 		this.network = new Network(this);
 	}
 
+	/**
+	 * Makes a move in the game based on the column chosen by the player.
+	 * 
+	 * @param column The column where the player made the move.
+	 */
 	public void makeMove(int column) {
 		int row = -1;
 		if (model.getCurrentPlayer() == view.getThisPlayer()) {
@@ -55,6 +48,11 @@ public class Controller implements ActionListener {
 		}
 	}
 
+	/**
+	 * Processes the move received from the opponent player.
+	 * 
+	 * @param column The column where the opponent player made the move.
+	 */
 	public void recievedMove(int column) {
 		int row = model.makeMove(column);
 		if (row != -1) {
@@ -65,6 +63,11 @@ public class Controller implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Processes the chat message received from the opponent player.
+	 * 
+	 * @param message The chat message received from the opponent player.
+	 */
 	public void recievedChat(String message) {
 		view.appendMessage(message, view.getOtherPlayer());
 	}
@@ -141,22 +144,43 @@ public class Controller implements ActionListener {
 		return (int) button.getClientProperty("column");
 	}
 
+	/**
+	 * Sets the local player's identity.
+	 * 
+	 * @param thisPlayer The local player's identity.
+	 */
 	public void setThisPlayer(int thisPlayer) {
 		view.setThisPlayer(thisPlayer);
 	}
 	
+	/**
+	 * Sets the opponent player's identity.
+	 * 
+	 * @param otherPlayer The opponent player's identity.
+	 */
 	public void setOtherPlayer(int otherPlayer) {
 		view.setOtherPlayer(otherPlayer);
 	}
 	
+	/**
+	 * Confirms an action.
+	 */
 	public void confirm() {
 		view.confirm();
 	}
 	
+	/**
+	 * Sends a confirmation message.
+	 * 
+	 * @param option The confirmation option.
+	 */
 	public void confirmed(String option) {
 		network.sendMessage("CONFIRMED|" + option);
 	}
 	
+	/**
+	 * Resets the game state.
+	 */
 	public void resetGame() {
 		view.resetGame();
 		view.resetGameTimer();
@@ -165,6 +189,12 @@ public class Controller implements ActionListener {
 		view.startTimerThread();
 	}
 	
+	/**
+	 * Starts a server to host the game.
+	 * 
+	 * @param port The port to listen on.
+	 * @param name The name of the local player.
+	 */
 	public void runServer(int port, String name) {
 		try {
 			Server server = new Server(network, port, name);
@@ -175,24 +205,51 @@ public class Controller implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Connects to a server to join a game.
+	 * 
+	 * @param hostName The hostname or IP address of the server.
+	 * @param port     The port number of the server.
+	 * @param name     The name of the local player.
+	 */
 	public void runClient(String hostName, int port, String name) {
 		Client client = new Client(network, this, hostName, port, name);
 		Thread threadClient = new Thread(client);
 		threadClient.start();
 	}
 	
+	/**
+	 * Sets the name of the local player.
+	 * 
+	 * @param name The name of the local player.
+	 */
 	public void setMyName(String name) { 
 		view.setMyName(name);
 	}
 	
+	/**
+	 * Gets the name of the local player.
+	 * 
+	 * @return The name of the local player.
+	 */
 	public String getMyName() {
 		return view.getMyName();
 	}
 	
+	/**
+	 * Sets the name of the opponent player.
+	 * 
+	 * @param name The name of the opponent player.
+	 */
 	public void setOtherName(String name) { 
 		view.setOtherName(name);
 	}
 	
+	/**
+	 * Appends a chat message to the view.
+	 * 
+	 * @param message The chat message to append.
+	 */
 	public void appendChat(String message) {
 		view.appendMessage(message, view.getOtherPlayer());
 	}

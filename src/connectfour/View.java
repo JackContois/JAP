@@ -284,9 +284,21 @@ public class View extends JFrame {
 	 */
 	private JMenuItem l2;
 
+	/**
+	 * Menu item representing option 1.
+	 */
 	private JMenuItem n1;
+
+	/**
+	 * Menu item representing option 2.
+	 */
 	private JMenuItem n2;
+
+	/**
+	 * Menu item representing option 3.
+	 */
 	private JMenuItem n3;
+
 
 	/**
 	 * Manager for handling language localization.
@@ -348,22 +360,76 @@ public class View extends JFrame {
 	 */
 	String drawMessage;
 	
+	/**
+	 * Stores the name of the local player.
+	 */
 	String myName;
+
+	/**
+	 * Stores the name of the opponent player.
+	 */
 	String otherName;
 
+	/**
+	 * Dialog box for the client to join a game.
+	 */
 	JDialog clientDialog;
+
+	/**
+	 * Dialog box for the host to create a game.
+	 */
 	JDialog hostDialog;
 
+	/**
+	 * Text field for entering the host name in the host dialog.
+	 */
 	JTextField hostNameField;
+
+	/**
+	 * Text field for entering the port number in the host dialog.
+	 */
 	JTextField hostPortField;
+
+	/**
+	 * Text field for entering the client name in the client dialog.
+	 */
 	JTextField clientNameField;
+
+	/**
+	 * Text field for entering the port number in the client dialog.
+	 */
 	JTextField clientPortField;
+
+	/**
+	 * Text field for entering the first part of the server's IP address in the client dialog.
+	 */
 	JTextField addressField1;
+
+	/**
+	 * Text field for entering the second part of the server's IP address in the client dialog.
+	 */
 	JTextField addressField2;
+
+	/**
+	 * Text field for entering the third part of the server's IP address in the client dialog.
+	 */
 	JTextField addressField3;
+
+	/**
+	 * Text field for entering the fourth part of the server's IP address in the client dialog.
+	 */
 	JTextField addressField4;
+
+	/**
+	 * Label for displaying status messages in the host dialog.
+	 */
 	JLabel hostStatusMessage;
+
+	/**
+	 * Label for displaying status messages in the client dialog.
+	 */
 	JLabel clientStatusMessage;
+
 
 
 	/**
@@ -609,7 +675,10 @@ public class View extends JFrame {
 		});
 
 	}
-
+	/**
+	 * Displays a dialog for hosting a game, allowing the user to input their name and the port.
+	 * Allows the user to host a game or cancel the operation.
+	 */
 	protected void hostDialog() {
 		// adding dialog components
 		hostDialog = new JDialog(this, "Host Game",true);
@@ -664,6 +733,11 @@ public class View extends JFrame {
 
 	}
 
+	/**
+	 * Handles the data entered by the user in the host dialog.
+	 * Verifies the input data, checks for validity, and initiates the server if all conditions are met.
+	 * Displays appropriate error messages if input data is invalid or incomplete.
+	 */
 	protected void handleHostData() {
 		String hostName = hostNameField.getText();
 		String portName = hostPortField.getText();
@@ -693,6 +767,10 @@ public class View extends JFrame {
 
 	}
 
+	/**
+	 * Displays a dialog for joining a game, allowing the user to input their name, the server's IP address, and port.
+	 * Allows the user to connect to a game server or cancel the operation.
+	 */
 	protected void clientDialog() {
 		// adding dialog components
 		clientDialog = new JDialog(this, "Join Game",true);
@@ -777,6 +855,11 @@ public class View extends JFrame {
 		clientDialog.setVisible(true);
 	}
 
+	/**
+	 * Handles the data entered by the user in the client dialog.
+	 * Verifies the input data, checks for validity, and initiates the client connection if all conditions are met.
+	 * Displays appropriate error messages if input data is invalid or incomplete.
+	 */
 	protected void handleClientData() {
 		String clientName = clientNameField.getText();
 		String portName = clientPortField.getText();
@@ -1260,44 +1343,94 @@ public class View extends JFrame {
 		howToPlayDialog.setVisible(true);
 	}
 
+	/**
+	 * Displays a confirmation dialog and performs actions based on the user's choice.
+	 * If the user chooses 'Yes', confirms the reset request, resets the game, and prints "Confirmed!".
+	 * If the user chooses 'No', cancels the reset request, and prints "Cancelled!".
+	 */
 	protected void confirm() {
-		int option = JOptionPane.showConfirmDialog(null, "The other Player wants to reset the game? Would you like to?", "Confirmation", JOptionPane.YES_NO_OPTION);
+	    int option = JOptionPane.showConfirmDialog(null, "The other Player wants to reset the game? Would you like to?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
-		if (option == JOptionPane.YES_OPTION) {
-			controller.confirmed("yes");
-			System.out.println("Confirmed!");
-			controller.resetGame();
-		} else {
-			controller.confirmed("no");
-			System.out.println("Cancelled!");
-		}
+	    if (option == JOptionPane.YES_OPTION) {
+	        controller.confirmed("yes");
+	        System.out.println("Confirmed!");
+	        controller.resetGame();
+	    } else {
+	        controller.confirmed("no");
+	        System.out.println("Cancelled!");
+	    }
 	}
 
+	/**
+	 * Sets the player identifier for this player.
+	 * 
+	 * @param thisPlayer The player identifier for this player.
+	 */
 	public void setThisPlayer(int thisPlayer) {
-		this.thisPlayer = thisPlayer;
+	    this.thisPlayer = thisPlayer;
 	}
 
+	/**
+	 * Retrieves the player identifier for this player.
+	 * 
+	 * @return The player identifier for this player.
+	 */
 	protected int getThisPlayer() {
-		return thisPlayer;
+	    return thisPlayer;
 	}
 
+	/**
+	 * Sets the player identifier for the other player.
+	 * 
+	 * @param otherPlayer The player identifier for the other player.
+	 */
 	public void setOtherPlayer(int otherPlayer) {
-		this.otherPlayer = otherPlayer;
+	    this.otherPlayer = otherPlayer;
 	}
 
+	/**
+	 * Retrieves the player identifier for the other player.
+	 * 
+	 * @return The player identifier for the other player.
+	 */
 	protected int getOtherPlayer() {
-		return otherPlayer;
+	    return otherPlayer;
 	}
-	
+
+	/**
+	 * Sets the name of this player.
+	 * 
+	 * @param name The name of this player.
+	 */
 	public void setMyName(String name) { 
-		this.myName = name;
+	    this.myName = name;
 	}
-	
+
+	/**
+	 * Retrieves the name of this player.
+	 * 
+	 * @return The name of this player.
+	 */
 	public String getMyName() {
-		return myName;
+	    return myName;
 	}
-	
+
+	/**
+	 * Sets the name of the other player.
+	 * 
+	 * @param name The name of the other player.
+	 */
 	public void setOtherName(String name) { 
-		this.otherName = name;
+	    this.otherName = name;
 	}
+
+	/**
+	 * Retrieves the name of the other player.
+	 * 
+	 * @return The name of the other player.
+	 */
+	public String getOtherName() {
+	    return otherName;
+	}
+
 }
