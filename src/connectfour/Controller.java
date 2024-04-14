@@ -111,14 +111,6 @@ public class Controller implements ActionListener {
 		case "hostDialog":
 			view.hostDialog();
 			break;
-		case "hostGame":
-			try {
-				Thread server = new Thread(new Server(network));
-				server.start();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			break;
 		case "clientDialog":
 			view.clientDialog();
 			break;
@@ -131,9 +123,11 @@ public class Controller implements ActionListener {
 		case "cancelClient":
 			view.clientDialog.dispose();
 			break;
-		case "joinGame":
-			Thread client = new Thread(new Client(network, this));
-			client.start();
+		case "disconnect":
+			network.sendMessage("DISCONNECT|");
+			network.disconnect();
+			this.resetGame();
+			break;
 		}
 	}
 
@@ -169,5 +163,37 @@ public class Controller implements ActionListener {
 		view.resetTurnTimer();
 		view.stopTimerThread();
 		view.startTimerThread();
+	}
+	
+	public void runServer(int port, String name) {
+		try {
+			Server server = new Server(network, port, name);
+			Thread threadServer = new Thread(server);
+			threadServer.start();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void runClient(String hostName, int port, String name) {
+		Client client = new Client(network, this, hostName, port, name);
+		Thread threadClient = new Thread(client);
+		threadClient.start();
+	}
+	
+	public void setMyName(String name) { 
+		view.setMyName(name);
+	}
+	
+	public String getMyName() {
+		return view.getMyName();
+	}
+	
+	public void setOtherName(String name) { 
+		view.setOtherName(name);
+	}
+	
+	public void appendChat(String message) {
+		view.appendMessage(message, view.getOtherPlayer());
 	}
 }

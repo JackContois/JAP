@@ -347,6 +347,9 @@ public class View extends JFrame {
 	 * Message displayed when the game ends in a draw.
 	 */
 	String drawMessage;
+	
+	String myName;
+	String otherName;
 
 	JDialog clientDialog;
 	JDialog hostDialog;
@@ -679,6 +682,7 @@ public class View extends JFrame {
 					hostStatusMessage.setText("Opening Connection");
 					System.out.println(hostName);
 					System.out.println(portName);
+					controller.runServer(portAsInt, hostName);
 				}
 			}catch(NumberFormatException e) {
 				hostStatusMessage.setText("port is not a number");
@@ -812,6 +816,7 @@ public class View extends JFrame {
 					System.out.println(clientName);
 					System.out.println(address);
 					System.out.println(portName);
+					controller.runClient(address, portAsInt, clientName);
 				}
 			}catch(NumberFormatException e) {
 				clientStatusMessage.setText("port or address is not a number");
@@ -880,15 +885,15 @@ public class View extends JFrame {
 		boardPanel.repaint();
 		int winner = model.checkWinner();
 		int player = model.getCurrentPlayer();
-		if (player == 1) {
-			String playerMoveMessage = player2Plays + col + "\n";
+		if (player == thisPlayer) {
+			String playerMoveMessage = otherName + player2Plays + col + "\n";
 			appendToGameLog(playerMoveMessage);
 			if (winner == 0) {
 				activePlayerLabel.setIcon(redPlayerImage);
 			}
 			blackChipsPlayed++;
 		} else {
-			String playerMoveMessage = player1Plays + col + "\n";
+			String playerMoveMessage = myName + player1Plays + col + "\n";
 			appendToGameLog(playerMoveMessage);
 			redChipsPlayed++;
 			if (winner == 0) {
@@ -901,7 +906,13 @@ public class View extends JFrame {
 
 		if (winner != 0 & winner != -1) {
 			realTime.stop();
-			String message = (winner == 1) ? player1Wins : player2Wins;
+			String message;
+			if (winner == thisPlayer) {
+				message = myName + player1Wins;
+			} else {
+				message = otherName + player2Wins;
+			}
+			
 			appendToGameLog(message + "\n");
 			disableColumnButtons();
 			// Create a custom dialog
@@ -1082,6 +1093,9 @@ public class View extends JFrame {
 
 		n2.addActionListener(controller);
 		n2.setActionCommand("clientDialog");
+		
+		n3.addActionListener(controller);
+		n3.setActionCommand("disconnect");
 	}
 
 	/**
@@ -1145,8 +1159,8 @@ public class View extends JFrame {
 		HTPMenu = currentPhrases.getOrDefault("HTPLabel", "How To Play");
 		h1.setText(HTPMenu);
 
-		this.player1Wins = currentPhrases.getOrDefault("P1Wins", "Player 1 Wins");
-		this.player2Wins = currentPhrases.getOrDefault("P2Wins", "Player 2 Wins");
+		this.player1Wins = currentPhrases.getOrDefault("P1Wins", " Wins");
+		this.player2Wins = currentPhrases.getOrDefault("P2Wins", " Wins");
 
 		String chipsPlayed = currentPhrases.getOrDefault("chipsPlayed", "Chips Played");
 		chipsPlayedLabel.setText(chipsPlayed);
@@ -1160,8 +1174,8 @@ public class View extends JFrame {
 		String turnTimer = currentPhrases.getOrDefault("turnTimer", "Turn Timer");
 		turnTimerLabel.setText(turnTimer + ": ");
 
-		this.player1Plays = currentPhrases.getOrDefault("player1Plays", "Player 1 Plays in Column: ");
-		this.player2Plays = currentPhrases.getOrDefault("player2Plays", "Player 2 Plays in Column: ");
+		this.player1Plays = currentPhrases.getOrDefault("player1Plays", "Plays in Column: ");
+		this.player2Plays = currentPhrases.getOrDefault("player2Plays", "Plays in Column: ");
 
 		String send = currentPhrases.getOrDefault("send", "Send");
 		sendButton.setText(send);
@@ -1184,7 +1198,11 @@ public class View extends JFrame {
 	}
 
 	protected void appendMessage(String message, int player) {
-		appendToGameLog("["+player+"]"+ " "+ message + "\n");
+		if (player == thisPlayer) {
+		appendToGameLog("["+myName+"]"+ " "+ message + "\n");
+		} else {
+			appendToGameLog("["+otherName+"]"+ " "+ message + "\n");
+		}
 		messageField.setText("");
 	}
 
@@ -1269,5 +1287,17 @@ public class View extends JFrame {
 
 	protected int getOtherPlayer() {
 		return otherPlayer;
+	}
+	
+	public void setMyName(String name) { 
+		this.myName = name;
+	}
+	
+	public String getMyName() {
+		return myName;
+	}
+	
+	public void setOtherName(String name) { 
+		this.otherName = name;
 	}
 }
